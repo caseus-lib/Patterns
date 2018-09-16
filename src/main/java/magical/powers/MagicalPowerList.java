@@ -5,12 +5,13 @@ import iterator.Iterator;
 import iterator.ReverseIterator;
 import iterator.TravelIterator;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
 public class MagicalPowerList {
 
-    private List<MagicalPower> magicalPowers;
+    private List<MagicalPower> magicalPowers = new ArrayList<>();
     private Iterator<MagicalPower> iterator;
 
     public void merge(MagicalPowerList magicalPowerList) {

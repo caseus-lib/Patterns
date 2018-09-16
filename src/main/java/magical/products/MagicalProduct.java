@@ -1,23 +1,39 @@
 package magical.products;
 
+import magical.powers.MagicalPower;
 import magical.powers.MagicalPowerList;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class MagicalProduct implements Product {
 
     protected List<Product> components;
-    protected MagicalPowerList magicalPowerList;
+    protected MagicalPowerList magicalPowerList = new MagicalPowerList();
+    private String name;
 
     public MagicalProduct() {
         components = new ArrayList<>();
     }
 
     @Override
+    public void addPower(MagicalPower magicalPower) {
+        magicalPowerList.add(magicalPower);
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
     public MagicalPowerList getMagicalPowerList() {
-        return Optional.ofNullable(magicalPowerList).orElse(constructMagicalPowerList());
+        return constructMagicalPowerList();
     }
 
     private MagicalPowerList constructMagicalPowerList() {
@@ -43,5 +59,10 @@ public class MagicalProduct implements Product {
     @Override
     public void removeComponent(Product product) {
         components.remove(product);
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

@@ -1,9 +1,15 @@
 package magical.powers;
 
+import javafx.util.StringConverter;
+
 public class Strength extends MagicalPower {
 
     public Strength(Integer amount) {
         super(amount);
+    }
+
+    public Strength() {
+        super();
     }
 
     @Override

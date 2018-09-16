@@ -23,9 +23,9 @@ public class Person {
     }
 
     public void consumeBake(Bake bake) {
-        System.out.println("I'm " + name + " and I'm consuming " + bake.getName() + " with power " +
-                bake.getMagicalPower().getName());
-        addPower(bake.getMagicalPower());
+//        System.out.println("I'm " + name + " and I'm consuming " + bake.getName() + " with power " +
+//                bake.getMagicalPower().getName());
+//        addPower(bake.getMagicalPower());
     }
 
     public void addPower(MagicalPower magicalPower) {
