@@ -1,12 +1,13 @@
 package magical.products;
 
-import iterator.Iterator;
 import magical.powers.MagicalPowerList;
+
+import java.util.List;
 
 public interface Product {
 
     MagicalPowerList getMagicalPowerList();
-    Iterator<Product> getComponents();
+    List<Product> getComponents();
     void addComponent(Product product);
     void removeComponent(Product product);
 

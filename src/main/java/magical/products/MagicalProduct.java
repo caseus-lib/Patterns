@@ -1,6 +1,5 @@
 package magical.products;
 
-import iterator.Iterator;
 import magical.powers.MagicalPowerList;
 
 import java.util.ArrayList;
@@ -32,8 +31,8 @@ public class MagicalProduct implements Product {
     }
 
     @Override
-    public Iterator<Product> getComponents() {
-        return null;
+    public List<Product> getComponents() {
+        return components;
     }
 
     @Override
