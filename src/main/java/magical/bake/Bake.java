@@ -1,23 +1,20 @@
 package magical.bake;
 
+import iterator.TravelIterator;
 import magical.powers.MagicalPower;
+import magical.products.MagicalProduct;
 
-public abstract class Bake {
+public abstract class Bake extends MagicalProduct {
 
-    private MagicalPower magicalPower;
     private String name;
 
-    Bake(MagicalPower magicalPower, String name) {
-        this.magicalPower = magicalPower;
+    Bake(String name) {
         this.name = name;
     }
 
-    public MagicalPower getMagicalPower() {
-        return magicalPower;
-    }
-
-    public void setMagicalPower(MagicalPower magicalPower) {
-        this.magicalPower = magicalPower;
+    Bake(MagicalPower magicalPower, String name) {
+        this.name = name;
+        magicalPowerList.add(magicalPower);
     }
 
     public String getName() {
@@ -28,7 +25,13 @@ public abstract class Bake {
         this.name = name;
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
+
     public boolean hasPower(MagicalPower magicalPower) {
-        return this.magicalPower.same(magicalPower);
+        TravelIterator<MagicalPower> travelIterator = magicalPowerList.createTravelIterator();
+        return travelIterator.travel(object -> object.same(magicalPower));
     }
 }

@@ -8,8 +8,8 @@ import java.util.Optional;
 
 public class MagicalProduct implements Product {
 
-    private List<Product> components;
-    private MagicalPowerList magicalPowerList;
+    protected List<Product> components;
+    protected MagicalPowerList magicalPowerList;
 
     public MagicalProduct() {
         components = new ArrayList<>();
