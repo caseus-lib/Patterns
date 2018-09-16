@@ -34,9 +34,7 @@ public class Seller implements Bakery {
 
     @Override
     public Optional<Bake> hasAnyBake() {
-        Optional<Bake> optionalBake = bakes.stream().findAny();
-        optionalBake.ifPresent(bake -> bakes.remove(bake));
-        return optionalBake;
+        return bakes.stream().findAny();
     }
 
 }

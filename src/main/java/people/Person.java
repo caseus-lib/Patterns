@@ -1,21 +1,17 @@
 package people;
 
 import exception.NoPowerFound;
+import iterator.Iterator;
 import magical.bake.Bake;
-import magical.powers.Happiness;
-import magical.powers.MagicalPower;
-import magical.powers.Responsibility;
-import magical.powers.Strength;
-
-import java.util.*;
+import magical.powers.*;
 
 public class Person {
 
-    private List<MagicalPower> powers;
+    private MagicalPowerList powers;
     private String name = "anonymous";
 
     private Person() {
-        powers = new ArrayList<>();
+        powers = new MagicalPowerList();
         powers.add(new Happiness(0));
         powers.add(new Responsibility(0));
         powers.add(new Strength(0));
@@ -33,16 +29,19 @@ public class Person {
     }
 
     public void addPower(MagicalPower magicalPower) {
-        powers.forEach(power -> power.merge(magicalPower));
+        powers.add(magicalPower);
     }
 
     public void printInfo() {
         System.out.println("I'm " + name + " and my powers are:");
-        powers.forEach(MagicalPower::printPower);
+        Iterator<MagicalPower> iterator = powers.createIterator();
+        for (iterator.first(); !iterator.isDone(); iterator.next()) {
+            iterator.currentItem().printPower();
+        }
     }
 
     public MagicalPower getMinPower() {
-        return powers.stream()
+        return powers.getStream()
                 .min(MagicalPower::compareTo)
                 .orElseThrow(NoPowerFound::new);
     }

@@ -12,9 +12,12 @@ public abstract class MagicalPower implements Comparable<MagicalPower> {
 
     public abstract String getName();
 
-    public void merge(MagicalPower magicalPower){
-        if (same(magicalPower))
+    public boolean merge(MagicalPower magicalPower){
+        if (same(magicalPower)) {
             amount += magicalPower.amount;
+            return true;
+        }
+        return false;
     }
 
     @Override
