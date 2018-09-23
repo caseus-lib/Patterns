@@ -23,4 +23,8 @@ public class PowersFactory {
         return magicalPowerList;
     }
 
+    public static MagicalPower getRandomPower()  {
+        return getPowersList().stream().findAny().orElse(new Happiness());
+    }
+
 }

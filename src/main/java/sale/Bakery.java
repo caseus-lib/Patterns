@@ -1,15 +1,15 @@
 package sale;
 
-import magical.bake.Bake;
 import magical.powers.MagicalPower;
+import magical.products.Product;
 
 import java.util.Optional;
 
 public interface Bakery {
 
-    void addBake(Bake ... bake);
-    Optional<Bake> hasBake(MagicalPower magicalPower);
-    Optional<Bake> hasAnyBake();
-    void saleBake(Bake bake);
+    void addProduct(Product... products);
+    Optional<Product> hasProduct(MagicalPower magicalPower);
+    Optional<Product> hasAnyProduct();
+    void saleProduct(Product bake);
 
 }

@@ -2,17 +2,24 @@ package magical.powers;
 
 import iterator.ForwardIterator;
 import iterator.Iterator;
-import iterator.ReverseIterator;
 import iterator.TravelIterator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class MagicalPowerList {
 
-    private List<MagicalPower> magicalPowers = new ArrayList<>();
-    private Iterator<MagicalPower> iterator;
+    private List<MagicalPower> magicalPowers;
+
+    public MagicalPowerList() {
+        magicalPowers = new ArrayList<>();
+    }
+
+    public MagicalPowerList(List<MagicalPower> powersList) {
+        magicalPowers = powersList;
+    }
 
     public void merge(MagicalPowerList magicalPowerList) {
         TravelIterator<MagicalPower> iterator = createTravelIterator();
@@ -29,20 +36,28 @@ public class MagicalPowerList {
         return magicalPowers.stream();
     }
 
-    public void add(MagicalPower magicalPower) {
+    public MagicalPowerList add(MagicalPower magicalPower) {
         for (MagicalPower power : magicalPowers) {
             if (power.merge(magicalPower)) {
-                return;
+                return this;
             }
         }
         magicalPowers.add(magicalPower);
+        return this;
     }
 
     public Iterator<MagicalPower> createIterator() {
-        return iterator = new ForwardIterator<>(magicalPowers);
+        return new ForwardIterator<>(magicalPowers);
     }
 
     public TravelIterator<MagicalPower> createTravelIterator() {
-        return (TravelIterator<MagicalPower>) (iterator = new TravelIterator<MagicalPower>(magicalPowers));
+        return new TravelIterator<>(magicalPowers);
+    }
+
+    @Override
+    public String toString() {
+        return magicalPowers.stream()
+                .map(MagicalPower::getName)
+                .collect(Collectors.joining("\n"));
     }
 }

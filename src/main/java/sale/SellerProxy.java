@@ -1,7 +1,7 @@
 package sale;
 
-import magical.bake.Bake;
 import magical.powers.MagicalPower;
+import magical.products.Product;
 
 import java.util.Optional;
 
@@ -14,28 +14,28 @@ public class SellerProxy implements Bakery {
     }
 
     @Override
-    public void addBake(Bake ...bake) {
-        seller.addBake(bake);
+    public void addProduct(Product...product) {
+        seller.addProduct(product);
     }
 
     @Override
-    public Optional<Bake> hasBake(MagicalPower magicalPower) {
+    public Optional<Product> hasProduct(MagicalPower magicalPower) {
         System.out.println("(S) - You want " + magicalPower.getName());
-        Optional<Bake> bake = seller.hasBake(magicalPower);
-        if (!bake.isPresent()) {
-            System.out.println("(S) - There is no any bake to give you " + magicalPower.getName());
-            return seller.hasAnyBake();
+        Optional<Product> product = seller.hasProduct(magicalPower);
+        if (!product.isPresent()) {
+            System.out.println("(S) - There is no any product to give you " + magicalPower.getName());
+            return seller.hasAnyProduct();
         }
-        return bake;
+        return product;
     }
 
     @Override
-    public void saleBake(Bake bake) {
-        seller.saleBake(bake);
+    public void saleProduct(Product product) {
+        seller.saleProduct(product);
     }
 
     @Override
-    public Optional<Bake> hasAnyBake() {
-        return seller.hasAnyBake();
+    public Optional<Product> hasAnyProduct() {
+        return seller.hasAnyProduct();
     }
 }

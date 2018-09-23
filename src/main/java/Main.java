@@ -5,7 +5,7 @@ import magical.bake.Candy;
 import magical.powers.Happiness;
 import magical.powers.Responsibility;
 import magical.powers.Strength;
-import people.Person;
+import creatures.Person;
 import sale.SellerProxy;
 import sale.Bakery;
 
@@ -22,7 +22,7 @@ public class Main {
         if (bake.isPresent()) {
             Bake bakeForSale = bake.get();
             bakery.saleBake(bakeForSale);
-            person.consumeBake(bakeForSale);
+            person.consume(bakeForSale);
         }
         else {
             System.out.println("I have not get any bake");
@@ -35,7 +35,7 @@ public class Main {
     public static void main(String[] args) {
 
         bakery = new SellerProxy();
-        bakery.addBake(
+        bakery.addProduct(
                 new Cake(),
                 new Cake(),
                 new Biscuit(),

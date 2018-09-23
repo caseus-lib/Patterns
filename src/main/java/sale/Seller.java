@@ -1,7 +1,7 @@
 package sale;
 
-import magical.bake.Bake;
 import magical.powers.MagicalPower;
+import magical.products.Product;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,32 +9,32 @@ import java.util.List;
 import java.util.Optional;
 
 public class Seller implements Bakery {
-    private List<Bake> bakes;
+    private List<Product> products;
 
     Seller() {
-        bakes = new ArrayList<>();
+        products = new ArrayList<>();
     }
 
     @Override
-    public void addBake(Bake ...bake) {
-        bakes.addAll(Arrays.asList(bake));
+    public void addProduct(Product ...products) {
+        this.products.addAll(Arrays.asList(products));
     }
 
     @Override
-    public void saleBake(Bake bake) {
-        bakes.remove(bake);
+    public void saleProduct(Product product) {
+        products.remove(product);
     }
 
     @Override
-    public Optional<Bake> hasBake(MagicalPower magicalPower) {
-        return bakes.stream()
-                .filter(bake -> bake.hasPower(magicalPower))
+    public Optional<Product> hasProduct(MagicalPower magicalPower) {
+        return products.stream()
+                .filter(product -> product.hasPower(magicalPower))
                 .findFirst();
     }
 
     @Override
-    public Optional<Bake> hasAnyBake() {
-        return bakes.stream().findAny();
+    public Optional<Product> hasAnyProduct() {
+        return products.stream().findAny();
     }
 
 }

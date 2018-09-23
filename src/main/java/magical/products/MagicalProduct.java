@@ -1,5 +1,6 @@
 package magical.products;
 
+import iterator.TravelIterator;
 import magical.powers.MagicalPower;
 import magical.powers.MagicalPowerList;
 
@@ -59,6 +60,12 @@ public class MagicalProduct implements Product {
     @Override
     public void removeComponent(Product product) {
         components.remove(product);
+    }
+
+    @Override
+    public boolean hasPower(MagicalPower magicalPower) {
+        TravelIterator<MagicalPower> travelIterator = magicalPowerList.createTravelIterator();
+        return travelIterator.travel(object -> object.same(magicalPower));
     }
 
     @Override

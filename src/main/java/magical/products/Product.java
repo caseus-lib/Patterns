@@ -14,5 +14,6 @@ public interface Product {
     String getName();
     void setName(String name);
     void addPower(MagicalPower magicalPower);
+    boolean hasPower(MagicalPower magicalPower);
 
 }

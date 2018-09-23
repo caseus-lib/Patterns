@@ -1,11 +1,11 @@
-package people;
+package creatures;
 
 import exception.NoPowerFound;
 import iterator.Iterator;
-import magical.bake.Bake;
 import magical.powers.*;
+import magical.products.Product;
 
-public class Person {
+public class Person implements OrdinalCreature {
 
     private MagicalPowerList powers;
     private String name = "anonymous";
@@ -22,14 +22,14 @@ public class Person {
         this.name = name;
     }
 
-    public void consumeBake(Bake bake) {
-//        System.out.println("I'm " + name + " and I'm consuming " + bake.getName() + " with power " +
-//                bake.getMagicalPower().getName());
-//        addPower(bake.getMagicalPower());
+    public void consume(Product product) {
+        System.out.println("I'm " + name + " and I'm consuming " + product.getName() + " with power " +
+                product.getMagicalPowerList().toString());
+        addPower(product.getMagicalPowerList());
     }
 
-    public void addPower(MagicalPower magicalPower) {
-        powers.add(magicalPower);
+    public void addPower(MagicalPowerList magicalPowerList) {
+        powers.merge(magicalPowerList);
     }
 
     public void printInfo() {
