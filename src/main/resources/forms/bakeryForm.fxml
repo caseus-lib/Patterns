@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="620.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ui.controllers.BakeryForm">
+  <ImageView id="emtyImage" fx:id="emptyImage" fitHeight="402.0" fitWidth="622.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <Image url="@../img/bakery/empty.png" />
+  </ImageView>
+  <ImageView id="emtyImage" fx:id="girlImage" fitHeight="402.0" fitWidth="622.0" pickOnBounds="true" preserveRatio="true">
+    <Image url="@../img/bakery/girl.png" />
+  </ImageView>
+  <ImageView id="emtyImage" fx:id="boyImage" fitHeight="402.0" fitWidth="622.0" pickOnBounds="true" preserveRatio="true">
+    <Image url="@../img/bakery/boy.png" />
+  </ImageView>
+  <ImageView id="emtyImage" fx:id="unicornImage" fitHeight="402.0" fitWidth="622.0" pickOnBounds="true" preserveRatio="true">
+    <Image url="@../img/bakery/unicorn.png" />
+  </ImageView>
+  <ImageView fx:id="cakeImage" fitHeight="79.0" fitWidth="79.0" layoutX="189.0" layoutY="201.0" pickOnBounds="true" preserveRatio="true">
+    <Image url="@../img/bakery/Chocolate_Cake.png" />
+  </ImageView>
+  <ImageView id="cakeImage" fx:id="boxImage" fitHeight="72.21500015258789" fitWidth="123.44444429770239" layoutX="173.0" layoutY="205.0" pickOnBounds="true" preserveRatio="true">
+    <Image url="@../img/bakery/White_Gift_Box_Png_Clipart_Image.png" />
+  </ImageView>
+  <ImageView id="cakeImage" fx:id="rainbowImage" fitHeight="62.21500778198242" fitWidth="114.46484070270887" layoutX="171.0" layoutY="210.0" pickOnBounds="true" preserveRatio="true">
+    <Image url="@../img/bakery/rainbow.png" />
+  </ImageView>
+  <ImageView id="cakeImage" fx:id="magicImage" fitHeight="99.81122563262129" fitWidth="101.44449615478516" layoutX="177.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true">
+    <Image url="@../img/bakery/magic.png" />
+  </ImageView>
+  <ImageView fx:id="customerDialogImage" fitHeight="178.73479102602536" fitWidth="261.5631103515625" layoutX="345.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+    <Image url="@../img/bakery/dialog-bubble-png-5.png" />
+  </ImageView>
+  <TextArea fx:id="customerTextArea" layoutX="352.0" layoutY="14.0" prefHeight="117.0" prefWidth="241.0" wrapText="true" />
+  <ImageView fx:id="sellerDialogImage" fitHeight="173.41836722539594" fitWidth="199.94117736816406" layoutX="15.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+    <Image url="@../img/bakery/img_454966.png" />
+  </ImageView>
+  <TextArea fx:id="sellerTextArea" layoutX="28.0" layoutY="14.0" prefHeight="117.0" prefWidth="175.0" wrapText="true" />
+  <Button fx:id="nextStepButton" layoutX="15.0" layoutY="368.0" mnemonicParsing="false" text="-&gt;" />
+</AnchorPane>

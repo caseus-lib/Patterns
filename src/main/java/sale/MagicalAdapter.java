@@ -2,6 +2,8 @@ package sale;
 
 import creatures.OrdinalCreature;
 import creatures.Unicorn;
+import magical.powers.Happiness;
+import magical.powers.MagicalPower;
 import magical.products.Product;
 import magical.products.Rainbow;
 
@@ -22,5 +24,10 @@ public class MagicalAdapter implements OrdinalCreature {
         Rainbow rainbow = new Rainbow();
         rainbow.getMagicalPowerList().merge(product.getMagicalPowerList());
         return rainbow;
+    }
+
+    @Override
+    public MagicalPower getMinPower() {
+        return new Happiness(0);
     }
 }

@@ -7,17 +7,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class Fridge implements Storage {
+public class ShowCase implements Storage {
 
     private List<Product> products;
 
-    private static Fridge ourInstance = new Fridge();
+    private static ShowCase ourInstance = new ShowCase();
 
-    public static Fridge getInstance() {
+    public static ShowCase getInstance() {
         return ourInstance;
     }
 
-    private Fridge() {
+    private ShowCase() {
         products = new ArrayList<>();
     }
 
@@ -36,12 +36,6 @@ public class Fridge implements Storage {
     @Override
     public void remove(Product product) {
         products.remove(product);
-    }
-
-    public void addSeveral(SimpleMagicalProduct product, int amount) {
-        while (amount-- > 0) {
-            product.addComponent(new SimpleMagicalProduct(product));
-        }
     }
 
     @Override

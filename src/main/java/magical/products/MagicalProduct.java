@@ -5,6 +5,7 @@ import magical.powers.MagicalPower;
 import magical.powers.MagicalPowerList;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MagicalProduct implements Product {
@@ -15,6 +16,10 @@ public class MagicalProduct implements Product {
 
     public MagicalProduct() {
         components = new ArrayList<>();
+    }
+
+    public MagicalProduct(String name) {
+        this.name = name;
     }
 
     @Override

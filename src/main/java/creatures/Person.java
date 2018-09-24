@@ -40,6 +40,7 @@ public class Person implements OrdinalCreature {
         }
     }
 
+    @Override
     public MagicalPower getMinPower() {
         return powers.getStream()
                 .min(MagicalPower::compareTo)

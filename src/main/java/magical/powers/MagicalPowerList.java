@@ -21,6 +21,11 @@ public class MagicalPowerList {
         magicalPowers = powersList;
     }
 
+    public MagicalPowerList(MagicalPowerList magicalPowerList) {
+        this();
+        this.magicalPowers = new ArrayList<>(magicalPowerList.magicalPowers);
+    }
+
     public void merge(MagicalPowerList magicalPowerList) {
         TravelIterator<MagicalPower> iterator = createTravelIterator();
         Iterator<MagicalPower> iteratorFrom = magicalPowerList.createIterator();
