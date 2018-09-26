@@ -15,5 +15,6 @@ public interface Product {
     void setName(String name);
     void addPower(MagicalPower magicalPower);
     boolean hasPower(MagicalPower magicalPower);
+    String getInfoAboutComponents();
 
 }

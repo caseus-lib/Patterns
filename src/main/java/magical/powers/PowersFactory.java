@@ -2,6 +2,7 @@ package magical.powers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class PowersFactory {
 
@@ -24,7 +25,9 @@ public class PowersFactory {
     }
 
     public static MagicalPower getRandomPower()  {
-        return getPowersList().stream().findAny().orElse(new Happiness());
+        MagicalPower magicalPower = getPowersList().stream().findAny().orElse(new Happiness());
+        magicalPower.setAmount(new Random().nextInt(1000) + 1);
+        return magicalPower;
     }
 
 }

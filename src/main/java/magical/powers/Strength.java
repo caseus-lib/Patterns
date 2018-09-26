@@ -1,15 +1,22 @@
 package magical.powers;
 
-import javafx.util.StringConverter;
-
 public class Strength extends MagicalPower {
 
     public Strength(Integer amount) {
         super(amount);
     }
 
+    private Strength(MagicalPower magicalPower) {
+        super(magicalPower);
+    }
+
     public Strength() {
         super();
+    }
+
+    @Override
+    public MagicalPower copy() {
+        return new Strength(this);
     }
 
     @Override
@@ -20,7 +27,7 @@ public class Strength extends MagicalPower {
 
     @Override
     public String getName() {
-        return "Strength";
+        return "Сила";
     }
 
     @Override

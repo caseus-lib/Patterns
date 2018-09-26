@@ -12,11 +12,17 @@ public class SpiceDecorator implements Product {
 
     public SpiceDecorator(Product product) {
         this.product = product;
+        this.product.addPower(PowersFactory.getRandomPower());
+    }
+
+    @Override
+    public String toString() {
+        return product.toString();
     }
 
     @Override
     public MagicalPowerList getMagicalPowerList() {
-        return product.getMagicalPowerList().add(PowersFactory.getRandomPower());
+        return product.getMagicalPowerList();
     }
 
     @Override
@@ -52,5 +58,10 @@ public class SpiceDecorator implements Product {
     @Override
     public boolean hasPower(MagicalPower magicalPower) {
         return product.hasPower(magicalPower);
+    }
+
+    @Override
+    public String getInfoAboutComponents() {
+        return product.getInfoAboutComponents();
     }
 }

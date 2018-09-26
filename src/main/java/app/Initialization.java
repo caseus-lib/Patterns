@@ -8,12 +8,12 @@ import magical.powers.Responsibility;
 import magical.powers.Strength;
 import magical.products.SimpleMagicalProduct;
 
-public class Process {
+public class Initialization {
 
-    private Fridge fridge = Fridge.getInstance();
-    private ShowCase showCase = ShowCase.getInstance();
+    private static Fridge fridge = Fridge.getInstance();
+    private static ShowCase showCase = ShowCase.getInstance();
 
-    private void addSimpleProducts() {
+    private static void addSimpleProducts() {
         fridge.addSeveral(
                 new SimpleMagicalProduct(
                         "Мука", new Happiness(2)
@@ -31,11 +31,11 @@ public class Process {
                         "Сахар",
                         new Strength(3), new Happiness(10)
                 ),
-                100
+                500
         );
     }
 
-    public void init() {
+    public static void init() {
         addSimpleProducts();
         for (int i = 0; i < 8; i++) {
             showCase.add(Cooker.cookCake());
@@ -46,10 +46,6 @@ public class Process {
         for (int i = 0; i < 16; i++) {
             showCase.add(Cooker.cookBiscuit());
         }
-    }
-
-    public void nextStep() {
-
     }
 
 }

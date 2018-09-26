@@ -23,21 +23,21 @@ public class Person implements OrdinalCreature {
     }
 
     public void consume(Product product) {
-        System.out.println("I'm " + name + " and I'm consuming " + product.getName() + " with power " +
-                product.getMagicalPowerList().toString());
         addPower(product.getMagicalPowerList());
     }
 
-    public void addPower(MagicalPowerList magicalPowerList) {
+    private void addPower(MagicalPowerList magicalPowerList) {
         powers.merge(magicalPowerList);
     }
 
-    public void printInfo() {
-        System.out.println("I'm " + name + " and my powers are:");
+    @Override
+    public String toString() {
+        StringBuilder info = new StringBuilder();
         Iterator<MagicalPower> iterator = powers.createIterator();
         for (iterator.first(); !iterator.isDone(); iterator.next()) {
-            iterator.currentItem().printPower();
+            info.append(iterator.currentItem().toString()).append('\n');
         }
+        return info.toString();
     }
 
     @Override

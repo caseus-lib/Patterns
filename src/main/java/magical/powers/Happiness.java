@@ -10,6 +10,15 @@ public class Happiness extends MagicalPower {
         super();
     }
 
+    private Happiness(MagicalPower magicalPower) {
+        super(magicalPower);
+    }
+
+    @Override
+    public MagicalPower copy() {
+        return new Happiness(this);
+    }
+
     @Override
     public void printPower() {
         System.out.println("Happiness - a state of well-being and contentment ");
@@ -18,7 +27,7 @@ public class Happiness extends MagicalPower {
 
     @Override
     public String getName() {
-        return "Happiness";
+        return "Счастье";
     }
 
     @Override

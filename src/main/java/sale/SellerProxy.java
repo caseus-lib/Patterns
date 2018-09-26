@@ -23,7 +23,6 @@ public class SellerProxy implements Bakery {
         System.out.println("(S) - You want " + magicalPower.getName());
         Optional<Product> product = seller.hasProduct(magicalPower);
         if (!product.isPresent()) {
-            System.out.println("(S) - There is no any product to give you " + magicalPower.getName());
             return seller.hasAnyProduct();
         }
         return product;

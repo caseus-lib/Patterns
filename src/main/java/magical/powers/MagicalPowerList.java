@@ -27,13 +27,13 @@ public class MagicalPowerList {
     }
 
     public void merge(MagicalPowerList magicalPowerList) {
-        TravelIterator<MagicalPower> iterator = createTravelIterator();
+        TravelIterator<MagicalPower> iteratorTo = createTravelIterator();
         Iterator<MagicalPower> iteratorFrom = magicalPowerList.createIterator();
         for (iteratorFrom.first(); !iteratorFrom.isDone(); iteratorFrom.next()) {
-            if (iterator.travel(object -> iteratorFrom.currentItem().merge(object))) {
+            if (iteratorTo.travel(object -> object.merge(iteratorFrom.currentItem()))) {
                 continue;
             }
-            add(iteratorFrom.currentItem());
+            add(iteratorFrom.currentItem().copy());
         }
     }
 
@@ -42,12 +42,12 @@ public class MagicalPowerList {
     }
 
     public MagicalPowerList add(MagicalPower magicalPower) {
-        for (MagicalPower power : magicalPowers) {
-            if (power.merge(magicalPower)) {
+        TravelIterator<MagicalPower> travelIterator = createTravelIterator();
+        for (travelIterator.first(); !travelIterator.isDone(); travelIterator.next()) {
+            if (travelIterator.travel(object -> object.merge(magicalPower)))
                 return this;
-            }
         }
-        magicalPowers.add(magicalPower);
+        magicalPowers.add(magicalPower.copy());
         return this;
     }
 
@@ -62,7 +62,7 @@ public class MagicalPowerList {
     @Override
     public String toString() {
         return magicalPowers.stream()
-                .map(MagicalPower::getName)
+                .map(MagicalPower::toString)
                 .collect(Collectors.joining("\n"));
     }
 }

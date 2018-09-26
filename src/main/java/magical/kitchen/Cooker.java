@@ -29,16 +29,16 @@ public class Cooker {
 
     private static void cookProduct(Product product, int flour, int egg, int sugar) {
         for (int i = 0; i < flour; i++) {
-            product.addComponent(fridge.getByName(BaseProduct.FlOUR.name())
-                    .orElseThrow(() -> new NoProductFound(BaseProduct.FlOUR.name())));
+            product.addComponent(fridge.getByName(BaseProduct.FlOUR.getName())
+                    .orElseThrow(() -> new NoProductFound(BaseProduct.FlOUR.getName())));
         }
         for (int i = 0; i < egg; i++) {
-            product.addComponent(fridge.getByName(BaseProduct.EGG.name())
-                    .orElseThrow(() -> new NoProductFound(BaseProduct.EGG.name())));
+            product.addComponent(fridge.getByName(BaseProduct.EGG.getName())
+                    .orElseThrow(() -> new NoProductFound(BaseProduct.EGG.getName())));
         }
         for (int i = 0; i < sugar; i++) {
-            product.addComponent(fridge.getByName(BaseProduct.SUGAR.name())
-                    .orElseThrow(() -> new NoProductFound(BaseProduct.SUGAR.name())));
+            product.addComponent(fridge.getByName(BaseProduct.SUGAR.getName())
+                    .orElseThrow(() -> new NoProductFound(BaseProduct.SUGAR.getName())));
         }
     }
 

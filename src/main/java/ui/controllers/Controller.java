@@ -1,7 +1,6 @@
 package ui.controllers;
 
 import javafx.stage.Stage;
-import ui.services.StageMethods;
 
 public class Controller {
 
@@ -15,6 +14,10 @@ public class Controller {
         if (stage == null)
             return;
         stage.showAndWait();
+    }
+
+    public void show() {
+        stage.show();
     }
 
 }

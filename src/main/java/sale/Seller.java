@@ -1,40 +1,35 @@
 package sale;
 
+import magical.kitchen.ShowCase;
 import magical.powers.MagicalPower;
 import magical.products.Product;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 public class Seller implements Bakery {
-    private List<Product> products;
-
-    Seller() {
-        products = new ArrayList<>();
-    }
+    private ShowCase showCase = ShowCase.getInstance();
 
     @Override
     public void addProduct(Product ...products) {
-        this.products.addAll(Arrays.asList(products));
+        Arrays.stream(products).forEach(product ->  showCase.add(product));
     }
 
     @Override
     public void saleProduct(Product product) {
-        products.remove(product);
+        showCase.remove(product);
     }
 
     @Override
     public Optional<Product> hasProduct(MagicalPower magicalPower) {
-        return products.stream()
+        return showCase.getAllProducts().stream()
                 .filter(product -> product.hasPower(magicalPower))
                 .findFirst();
     }
 
     @Override
     public Optional<Product> hasAnyProduct() {
-        return products.stream().findAny();
+        return showCase.getAllProducts().stream().findAny();
     }
 
 }

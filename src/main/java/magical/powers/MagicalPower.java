@@ -1,13 +1,17 @@
 package magical.powers;
 
-import javafx.util.StringConverter;
-
 public abstract class MagicalPower implements Comparable<MagicalPower> {
 
     Integer amount;
 
+    public MagicalPower(MagicalPower magicalPower) {
+        this(magicalPower.amount);
+    }
+
     public MagicalPower() {
     }
+
+    public abstract MagicalPower copy();
 
     public MagicalPower(Integer amount) {
         this.amount = amount;
@@ -31,6 +35,11 @@ public abstract class MagicalPower implements Comparable<MagicalPower> {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return getName() + " : " + amount;
     }
 
     @Override

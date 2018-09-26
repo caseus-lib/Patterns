@@ -8,6 +8,6 @@ public enum BaseProduct {
 
     private final String name;
     BaseProduct(String name) { this.name = name; }
-    public String getValue() { return name; }
+    public String getName() { return name; }
 
 }

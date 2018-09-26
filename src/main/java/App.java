@@ -1,5 +1,8 @@
+import app.Initialization;
+import app.Steps;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import ui.controllers.Controller;
 import ui.services.StageMethods;
 
 public class App extends Application {
@@ -10,6 +13,11 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        StageMethods.initStage("forms/kitchenForm.fxml", "Кухня").show();
+        Initialization.init();
+        Controller controller = StageMethods.initStage("forms/bakeryForm.fxml", "Волшебная пекарня");
+        if (!(controller instanceof Steps)) {
+            throw new RuntimeException("Контроллер не имплементирует интерфейс для работы пекарни");
+        }
+        controller.show();
     }
 }

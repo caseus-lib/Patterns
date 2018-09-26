@@ -1,7 +1,5 @@
 package magical.powers;
 
-import javafx.util.StringConverter;
-
 public class Responsibility extends MagicalPower {
 
     public Responsibility(Integer amount) {
@@ -10,6 +8,15 @@ public class Responsibility extends MagicalPower {
 
     public Responsibility() {
         super();
+    }
+
+    private Responsibility(MagicalPower magicalPower) {
+        super(magicalPower);
+    }
+
+    @Override
+    public MagicalPower copy() {
+        return new Responsibility(this);
     }
 
     @Override
@@ -21,7 +28,7 @@ public class Responsibility extends MagicalPower {
 
     @Override
     public String getName() {
-        return "Responsibility";
+        return "Ответственность";
     }
 
     @Override

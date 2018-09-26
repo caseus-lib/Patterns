@@ -5,20 +5,22 @@ import magical.powers.MagicalPower;
 import magical.powers.MagicalPowerList;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MagicalProduct implements Product {
 
-    protected List<Product> components;
-    protected MagicalPowerList magicalPowerList = new MagicalPowerList();
+    private List<Product> components;
+    protected MagicalPowerList magicalPowerList;
     private String name;
 
-    public MagicalProduct() {
+    protected MagicalProduct() {
         components = new ArrayList<>();
+        magicalPowerList = new MagicalPowerList();
     }
 
     public MagicalProduct(String name) {
+        this();
         this.name = name;
     }
 
@@ -39,7 +41,7 @@ public class MagicalProduct implements Product {
 
     @Override
     public MagicalPowerList getMagicalPowerList() {
-        return constructMagicalPowerList();
+        return magicalPowerList;
     }
 
     private MagicalPowerList constructMagicalPowerList() {
@@ -60,17 +62,33 @@ public class MagicalProduct implements Product {
     @Override
     public void addComponent(Product product) {
         components.add(product);
+        magicalPowerList.merge(product.getMagicalPowerList());
     }
 
     @Override
     public void removeComponent(Product product) {
         components.remove(product);
+        product.getMagicalPowerList()
+                .getStream()
+                .forEach(magicalPower -> magicalPower.setAmount(magicalPower.getAmount() * -1));
+        magicalPowerList.merge(product.getMagicalPowerList());
     }
 
     @Override
     public boolean hasPower(MagicalPower magicalPower) {
         TravelIterator<MagicalPower> travelIterator = magicalPowerList.createTravelIterator();
         return travelIterator.travel(object -> object.same(magicalPower));
+    }
+
+    @Override
+    public String getInfoAboutComponents() {
+        return components
+                .stream()
+                .map(product ->
+                       "\t" + product.getName() + "\n" +
+                               product.getMagicalPowerList().toString()
+                )
+                .collect(Collectors.joining("\n"));
     }
 
     @Override

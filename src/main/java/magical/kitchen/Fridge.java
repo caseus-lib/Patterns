@@ -40,7 +40,7 @@ public class Fridge implements Storage {
 
     public void addSeveral(SimpleMagicalProduct product, int amount) {
         while (amount-- > 0) {
-            product.addComponent(new SimpleMagicalProduct(product));
+            products.add(new SimpleMagicalProduct(product));
         }
     }
 

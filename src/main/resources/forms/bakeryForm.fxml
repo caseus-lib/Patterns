@@ -35,10 +35,11 @@
   <ImageView fx:id="customerDialogImage" fitHeight="178.73479102602536" fitWidth="261.5631103515625" layoutX="345.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
     <Image url="@../img/bakery/dialog-bubble-png-5.png" />
   </ImageView>
-  <TextArea fx:id="customerTextArea" layoutX="352.0" layoutY="14.0" prefHeight="117.0" prefWidth="241.0" wrapText="true" />
+  <TextArea fx:id="customerTextArea" editable="false" layoutX="352.0" layoutY="14.0" prefHeight="117.0" prefWidth="241.0" wrapText="true" />
   <ImageView fx:id="sellerDialogImage" fitHeight="173.41836722539594" fitWidth="199.94117736816406" layoutX="15.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
     <Image url="@../img/bakery/img_454966.png" />
   </ImageView>
-  <TextArea fx:id="sellerTextArea" layoutX="28.0" layoutY="14.0" prefHeight="117.0" prefWidth="175.0" wrapText="true" />
-  <Button fx:id="nextStepButton" layoutX="15.0" layoutY="368.0" mnemonicParsing="false" text="-&gt;" />
+  <TextArea fx:id="sellerTextArea" editable="false" layoutX="28.0" layoutY="14.0" prefHeight="117.0" prefWidth="175.0" wrapText="true" />
+  <Button fx:id="nextStepButton" layoutX="15.0" layoutY="368.0" mnemonicParsing="false" onMouseClicked="#nextStep" text="-&gt;" />
+  <TextArea fx:id="caseShow" editable="false" layoutX="28.0" layoutY="14.0" prefHeight="375.0" prefWidth="175.0" wrapText="true" />
 </AnchorPane>

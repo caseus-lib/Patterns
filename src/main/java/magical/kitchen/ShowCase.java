@@ -4,6 +4,7 @@ import magical.products.Product;
 import magical.products.SimpleMagicalProduct;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,6 +41,7 @@ public class ShowCase implements Storage {
 
     @Override
     public List<Product> getAllProducts() {
+        Collections.shuffle(products);
         return products;
     }
 }
