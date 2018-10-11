@@ -20,7 +20,6 @@ public class SellerProxy implements Bakery {
 
     @Override
     public Optional<Product> hasProduct(MagicalPower magicalPower) {
-        System.out.println("(S) - You want " + magicalPower.getName());
         Optional<Product> product = seller.hasProduct(magicalPower);
         if (!product.isPresent()) {
             return seller.hasAnyProduct();

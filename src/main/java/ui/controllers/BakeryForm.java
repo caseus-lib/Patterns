@@ -4,12 +4,9 @@ import app.Steps;
 import creatures.OrdinalCreature;
 import creatures.Person;
 import creatures.Unicorn;
-import iterator.ForwardIterator;
-import iterator.Iterator;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TreeView;
 import javafx.scene.image.ImageView;
 import magical.kitchen.BoxMaker;
 import magical.kitchen.ShowCase;
@@ -19,6 +16,7 @@ import magical.products.SpiceDecorator;
 import sale.Bakery;
 import sale.MagicalAdapter;
 import sale.SellerProxy;
+import steps.StepsWorker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,8 +42,7 @@ public class BakeryForm extends Controller implements Steps {
 
     private List<ImageView> images;
 
-    private List<Runnable> stepsArray;
-    private Iterator<Runnable> iterator;
+    private StepsWorker stepsWorker;
 
     private Bakery seller;
     private Product product;
@@ -66,33 +63,9 @@ public class BakeryForm extends Controller implements Steps {
         images.add(emptyImage);
         images.add(customerDialogImage);
         seller = new SellerProxy();
-        initSteps();
-        iterator = new ForwardIterator<>(stepsArray);
-        iterator.first();
+        stepsWorker = new StepsWorker(this);
         hideAll();
         emptyImage.setVisible(true);
-    }
-
-    private void initSteps() {
-        stepsArray = new ArrayList<>();
-        stepsArray.add(this::watchShowCase);
-        stepsArray.add(this::girlHasCame);
-        stepsArray.add(this::personRequestsForMinPower);
-        stepsArray.add(this::sellerGivesProduct);
-        stepsArray.add(this::personGetsProduct);
-        stepsArray.add(this::boyHasCame);
-        stepsArray.add(this::personRequestsForBox);
-        stepsArray.add(this::sellerGivesProduct);
-        stepsArray.add(this::personGetsProduct);
-        stepsArray.add(this::unicornHasCame);
-        stepsArray.add(this::unicornRequestsForRainbow);
-        stepsArray.add(this::sellerGivesProduct);
-        stepsArray.add(this::adapterWorks);
-        stepsArray.add(this::unicornGetsProduct);
-        stepsArray.add(this::girlHasCame);
-        stepsArray.add(this::personRequestsForMinPowerWithSpice);
-        stepsArray.add(this::sellerGivesProductWithSpice);
-        stepsArray.add(this::personGetsProduct);
     }
 
     @Override
@@ -190,7 +163,7 @@ public class BakeryForm extends Controller implements Steps {
             product = BoxMaker.createRandomBox();
             sellerTextArea.setText(
                     "Держите " + product.toString() + "\n" +
-                    "Состав коробки:\n" + product.getInfoAboutComponents()
+                            "Состав коробки:\n" + product.getInfoAboutComponents()
             );
             boxImage.setVisible(true);
         } else {
@@ -211,9 +184,9 @@ public class BakeryForm extends Controller implements Steps {
         caseShow.setVisible(true);
         caseShow.setText(
                 ShowCase.getInstance().getAllProducts()
-                .stream()
-                .map(bake -> bake.getName() + "\n" + bake.getInfoAboutComponents()).
-                collect(Collectors.joining("\n"))
+                        .stream()
+                        .map(bake -> bake.getName() + "\n" + bake.getInfoAboutComponents()).
+                        collect(Collectors.joining("\n"))
         );
     }
 
@@ -230,9 +203,6 @@ public class BakeryForm extends Controller implements Steps {
     }
 
     public void nextStep() {
-        if (!iterator.isDone()) {
-            iterator.currentItem().run();
-            iterator.next();
-        }
+        stepsWorker.nextStep();
     }
 }
