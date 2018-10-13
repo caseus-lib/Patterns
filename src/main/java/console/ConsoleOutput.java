@@ -1,17 +1,14 @@
 package console;
 
 import app.Steps;
-import creatures.OrdinalCreature;
+import core.Infrastructure;
+import core.Executor;
 import creatures.Person;
 import creatures.Unicorn;
-import magical.kitchen.BoxMaker;
 import magical.kitchen.ShowCase;
 import magical.powers.MagicalPower;
 import magical.products.Product;
-import magical.products.SpiceDecorator;
-import sale.Bakery;
 import sale.MagicalAdapter;
-import sale.SellerProxy;
 import steps.StepsWorker;
 
 import java.util.Optional;
@@ -20,13 +17,7 @@ import java.util.stream.Collectors;
 
 public class ConsoleOutput implements Steps {
 
-    private StepsWorker stepsWorker;
-
-    private Bakery seller = new SellerProxy();
-    private Product product;
-    private MagicalPower magicalPower;
-    private OrdinalCreature ordinalCreature;
-    private boolean getBox = false;
+    private Infrastructure executor = new Executor();
     private Scanner scanner = new Scanner(System.in);
 
     private void printComment(String comment) {
@@ -46,7 +37,7 @@ public class ConsoleOutput implements Steps {
     }
 
     public void startProcess() {
-        stepsWorker = new StepsWorker(this);
+        StepsWorker stepsWorker = new StepsWorker(this);
         do {
             stepsWorker.nextStep();
         } while (!waitForPress().equals("quit"));
@@ -56,66 +47,66 @@ public class ConsoleOutput implements Steps {
     public void girlHasCame() {
         printComment("Заходит девушка");
         printCustomerReplica("Добрый день!");
-        ordinalCreature = new Person("Мария");
+        executor.assignNewOrdinalCreature(new Person("Мария"));
     }
 
     @Override
     public void boyHasCame() {
         printComment("Заходит парень");
         printCustomerReplica("Здравствуйте!");
-        ordinalCreature = new Person("Павел");
+        executor.assignNewOrdinalCreature(new Person("Павел"));
     }
 
     @Override
     public void unicornHasCame() {
         printComment("Заходит единорог");
         printCustomerReplica("Gjkzdadioadk!");
-        ordinalCreature = new MagicalAdapter(new Unicorn());
+        executor.assignNewOrdinalCreature(new MagicalAdapter(new Unicorn()));
     }
 
     @Override
     public void personRequestsForMinPower() {
-        magicalPower = ordinalCreature.getMinPower();
-        printCustomerReplica("Мои силы: \n" + ordinalCreature.toString() +
+        MagicalPower magicalPower = executor.retrieveOrdinalCreatureMinPower();
+        printCustomerReplica("Мои силы: \n" + executor.retrieveCreatureInformation() +
                 "Мне бы добавить себе такой силы, как: " + magicalPower.getName());
-        getBox = false;
+        executor.setBoxActiveState(false);
     }
 
     @Override
     public void personRequestsForMinPowerWithSpice() {
-        magicalPower = ordinalCreature.getMinPower();
-        printCustomerReplica("Мои силы: \n" + ordinalCreature.toString() +
+        MagicalPower magicalPower = executor.retrieveOrdinalCreatureMinPower();
+        printCustomerReplica("Мои силы: \n" + executor.retrieveCreatureInformation() +
                 "Мне бы добавить себе такой силы, как: " + magicalPower.getName() +
                 "\nИ обязательно добавить специй!");
-        getBox = false;
+        executor.setBoxActiveState(false);
     }
 
     @Override
     public void personRequestsForBox() {
-        getBox = true;
+        executor.setBoxActiveState(true);
         printCustomerReplica("Соберите мне, пожалуйста, волшебную коробку со сладостями");
     }
 
     @Override
     public void unicornRequestsForRainbow() {
-        getBox = false;
+        executor.setBoxActiveState(false);
         printCustomerReplica("Tsejf ksjdfuwn jfuiwkw kdmkfs");
     }
 
     @Override
     public void sellerGivesProduct() {
-        if (getBox) {
-            product = BoxMaker.createRandomBox();
+        if (executor.isBoxActive()) {
+            Product product = executor.askForBox();
             printSellerReplica(
                     "Держите " + product.toString() + "\n" +
                             "Состав коробки:\n" + product.getInfoAboutComponents()
             );
             printComment("На прилавке появляется сладость");
         } else {
-            Optional<Product> optionalProduct = seller.hasProduct(magicalPower);
+            Optional<Product> optionalProduct = executor.askForProduct();
             if (optionalProduct.isPresent()) {
-                product = optionalProduct.get();
-                seller.saleProduct(product);
+                Product product = optionalProduct.get();
+                executor.saleProduct(product);
                 printSellerReplica("Держите " + product.toString());
                 printComment("На прилавке появляется сладость");
             } else {
@@ -126,12 +117,12 @@ public class ConsoleOutput implements Steps {
 
     @Override
     public void sellerGivesProductWithSpice() {
-        Optional<Product> optionalProduct = seller.hasProduct(magicalPower);
+        Optional<Product> optionalProduct = executor.askForProduct();
         if (optionalProduct.isPresent()) {
-            product = optionalProduct.get();
-            seller.saleProduct(product);
+            Product product = optionalProduct.get();
+            executor.saleProduct(product);
             String message = "Без специй:\n" + product.getName() + "\n" + product.getMagicalPowerList().toString();
-            product = new SpiceDecorator(product);
+            product = executor.decorateProduct();
             printSellerReplica(message + "\nСо специями:\n" +
                     product.getName() + "\n" + product.getMagicalPowerList().toString());
             printComment("На прилавке появляется сладость");
@@ -142,14 +133,14 @@ public class ConsoleOutput implements Steps {
 
     @Override
     public void personGetsProduct() {
-        ordinalCreature.consume(product);
-        printCustomerReplica("Спасибо! Теперь мои силы: \n" + ordinalCreature.toString());
+        executor.consumeProduct();
+        printCustomerReplica("Спасибо! Теперь мои силы: \n" + executor.retrieveCreatureInformation());
     }
 
     @Override
     public void unicornGetsProduct() {
         printComment("Волшебная пыль превращаетя в радугу");
-        ordinalCreature.consume(product);
+        executor.consumeProduct();
         printCustomerReplica("Thfjsnfussk!");
     }
 
