@@ -1,6 +1,6 @@
 package app.graphic.ui.view;
 
-import printer.ProductViewFactory;
+import viewer.ProductViewFactory;
 
 public class ProductImageFactory extends ProductViewFactory {
 

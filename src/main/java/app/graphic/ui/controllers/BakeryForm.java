@@ -1,17 +1,14 @@
 package app.graphic.ui.controllers;
 
 import app.executor.Steps;
+import app.executor.StepsWorker;
+import app.graphic.ui.services.Size;
+import app.graphic.ui.view.ProductImageButton;
+import app.graphic.ui.view.ProductImageFactory;
+import enums.ContextType;
 import environment.creatures.OrdinalCreature;
 import environment.creatures.Person;
 import environment.creatures.Unicorn;
-import exception.NoProductFound;
-import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.Tooltip;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.FlowPane;
 import environment.kitchen.BoxMaker;
 import environment.kitchen.ShowCase;
 import environment.magical.powers.MagicalPower;
@@ -20,11 +17,15 @@ import environment.products.SpiceDecorator;
 import environment.sale.Bakery;
 import environment.sale.MagicalAdapter;
 import environment.sale.SellerProxy;
-import app.executor.StepsWorker;
-import app.graphic.ui.view.ProductImageButton;
-import app.graphic.ui.view.ProductImageFactory;
-import app.graphic.ui.services.Size;
-import printer.ProductViewFactory;
+import exception.NoProductFound;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
+import viewer.Context;
+import viewer.ProductViewFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,8 +85,7 @@ public class BakeryForm extends Controller implements Steps {
         ShowCase.getInstance().getProductAmountMap().forEach((s, integer) -> {
             ProductImageButton productImage = (ProductImageButton) productImageFactory.getProductImage(
                     ShowCase.getInstance().getByName(s).orElseThrow(() -> new NoProductFound(s)),
-                    new Size(100, 100));
-            productImage.setTooltip(new Tooltip(integer.toString()));
+                    new Context(ContextType.SHOW_CASE, new Size(100, 100), integer));
             showCaseFlowPane.getChildren().add(productImage);
         });
     }
@@ -206,7 +206,8 @@ public class BakeryForm extends Controller implements Steps {
 
     private void updateButton() {
         mainPane.getChildren().remove(cakeButton);
-        cakeButton = (ProductImageButton) productImageFactory.getProductImage(product, new Size(50, 50));
+        cakeButton = (ProductImageButton) productImageFactory.getProductImage(product,
+                new Context(ContextType.GOODS, new Size(50, 50)));
         cakeButton.setLayoutX(177);
         cakeButton.setLayoutY(200);
         mainPane.getChildren().add(cakeButton);

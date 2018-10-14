@@ -1,5 +1,6 @@
 package app;
 
+import environment.Counter;
 import environment.kitchen.Cooker;
 import environment.kitchen.Fridge;
 import environment.kitchen.ShowCase;
@@ -12,6 +13,7 @@ public class Initialization {
 
     private static Fridge fridge = Fridge.getInstance();
     private static ShowCase showCase = ShowCase.getInstance();
+    private static Counter counter = Counter.getInstance();
 
     private static void addSimpleProducts() {
         fridge.addSeveral(
@@ -20,19 +22,22 @@ public class Initialization {
                 ),
                 100
         );
+        counter.addProduct("Мука", 2);
         fridge.addSeveral(
                 new SimpleMagicalProduct(
                         "Яйцо", new Responsibility(5)
                 ),
                 100
         );
+        counter.addProduct("Яйцо", 5);
         fridge.addSeveral(
                 new SimpleMagicalProduct(
                         "Сахар",
                         new Strength(3), new Happiness(10)
                 ),
-                500
-        );
+                500);
+        counter.addProduct("Сахар", 1);
+
     }
 
     public static void init() {

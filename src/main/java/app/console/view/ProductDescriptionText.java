@@ -1,7 +1,10 @@
 package app.console.view;
 
+import enums.ContextType;
+import environment.Counter;
 import environment.products.Product;
-import printer.ProductView;
+import viewer.Context;
+import viewer.ProductView;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -13,12 +16,15 @@ public class ProductDescriptionText implements ProductView {
 
     private String bigProduct;
     private String smallProduct;
+    private String description;
+    private Product product;
     private boolean isSmall;
 
     public ProductDescriptionText() {
     }
 
     public ProductDescriptionText(Product product) {
+        this.product = product;
         bigProduct = readDescription(product, "big");
         smallProduct = readDescription(product, "small");
         isSmall = false;
@@ -34,7 +40,7 @@ public class ProductDescriptionText implements ProductView {
             return "\n" + new String(Files.readAllBytes(
                     Paths.get(Objects.requireNonNull(getClass().getClassLoader().getResource(
                             "text/" + product.getName() + "_" + size + ".txt"
-                    )).toURI()))) + "\n" + product.getName();
+                    )).toURI()))) + "\n" + product.getName() + "\n";
         } catch (NullPointerException e) {
             return "";
         } catch (IOException | URISyntaxException e) {
@@ -44,15 +50,21 @@ public class ProductDescriptionText implements ProductView {
     }
 
     @Override
-    public void setSize(double x, double y) {
-        isSmall = x < 50;
+    public void setState(Context context) {
+        if (context.getContextType() == ContextType.SHOW_CASE) {
+            isSmall = false;
+            description = bigProduct +
+                    (context.getAmount() != null ? "Количество: " + context.getAmount() : "") +
+                    "\n\n" + product.getInfoAboutComponents();
+        } else {
+            isSmall = true;
+            description = smallProduct + "\n\n" +
+                    "Стоимость: " + Counter.getInstance().countTotalProductCost(product);
+        }
     }
 
     @Override
     public String toString() {
-        if (isSmall)
-            return smallProduct;
-        else
-            return bigProduct;
+        return description;
     }
 }

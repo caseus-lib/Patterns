@@ -5,7 +5,7 @@ import app.executor.Behavior;
 import app.executor.BehaviorExecutor;
 import app.executor.Steps;
 import app.executor.StepsWorker;
-import app.graphic.ui.services.Size;
+import enums.ContextType;
 import environment.creatures.Person;
 import environment.creatures.Unicorn;
 import environment.kitchen.ShowCase;
@@ -13,7 +13,8 @@ import environment.magical.powers.MagicalPower;
 import environment.products.Product;
 import environment.sale.MagicalAdapter;
 import exception.NoProductFound;
-import printer.ProductViewFactory;
+import viewer.Context;
+import viewer.ProductViewFactory;
 
 import java.util.Optional;
 import java.util.Scanner;
@@ -103,8 +104,7 @@ public class ConsoleOutput implements Steps {
         if (executor.isBoxActive()) {
             Product product = executor.askForBox();
             printSellerReplica(
-                    "Держите " + productViewFactory.getProductImage(product, new Size(0, 0)) + "\n" +
-                            "Состав коробки:\n" + product.getInfoAboutComponents()
+                    "Держите " + productViewFactory.getProductImage(product, new Context(ContextType.SHOW_CASE))
             );
             printComment("На прилавке появляется коробка");
         } else {
@@ -112,7 +112,7 @@ public class ConsoleOutput implements Steps {
             if (optionalProduct.isPresent()) {
                 Product product = optionalProduct.get();
                 executor.saleProduct(product);
-                printSellerReplica("Держите " + productViewFactory.getProductImage(product, new Size(0, 0)));
+                printSellerReplica("Держите " + productViewFactory.getProductImage(product, new Context(ContextType.GOODS)));
                 printComment("На прилавке появляется сладость");
             } else {
                 printSellerReplica("К сожалению, все законичилось. Приходите завтра!");
@@ -157,14 +157,11 @@ public class ConsoleOutput implements Steps {
         printComment("Его содержимое" +
                 ShowCase.getInstance().getProductAmountMap().entrySet()
                         .stream()
-                        .map(entry -> {
-                            Product product = ShowCase.getInstance().getByName(entry.getKey())
-                                    .orElseThrow(() -> new NoProductFound(entry.getKey()));
-                            return productViewFactory.getProductImage(product,
-                                    new Size(100, 100))
-                                    + "\n количество:" + entry.getValue()
-                                    + "\n" + product.getInfoAboutComponents();
-                        })
+                        .map(entry -> productViewFactory.getProductImage(
+                                ShowCase.getInstance().getByName(entry.getKey())
+                                        .orElseThrow(() -> new NoProductFound(entry.getKey())),
+                                new Context(ContextType.SHOW_CASE, entry.getValue())).toString()
+                        )
                         .collect(Collectors.joining("\n\n"))
         );
     }

@@ -1,16 +1,21 @@
 package app.graphic.ui.view;
 
+import enums.ContextType;
+import environment.Counter;
+import environment.products.Product;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import environment.products.Product;
-import printer.ProductView;
+import viewer.Context;
+import viewer.ProductView;
 
 public class ProductImageButton extends Button implements ProductView {
 
     private Product product;
     private boolean isImageVisible;
     private ImageView image;
+    private String text;
 
     public ProductImageButton() {
         super();
@@ -35,15 +40,25 @@ public class ProductImageButton extends Button implements ProductView {
             setText("");
         } else {
             setGraphic(null);
-            setText(product.getName() + "\n" + product.getInfoAboutComponents());
+            setText(text);
         }
         isImageVisible = !isImageVisible;
     }
 
     @Override
-    public void setSize(double width, double height) {
-        image.setFitHeight(height);
-        image.setFitWidth(width);
+    public void setState(Context context) {
+        if (context.getContextType() == ContextType.SHOW_CASE) {
+            text = product.getName() +
+                    "\n" + product.getInfoAboutComponents();
+            setTooltip(new Tooltip(context.getAmount().toString()));
+        }
+        else {
+            text = product.getName() +
+                    "\nСтоимость: " + Counter.getInstance().countTotalProductCost(product);
+            setTooltip(null);
+        }
+        image.setFitHeight(context.getSize().getY());
+        image.setFitWidth(context.getSize().getX());
     }
 
     @Override

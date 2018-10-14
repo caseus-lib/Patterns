@@ -1,6 +1,6 @@
 package app.console.view;
 
-import printer.ProductViewFactory;
+import viewer.ProductViewFactory;
 
 public class ProductDescriptionFactory extends ProductViewFactory {
 
