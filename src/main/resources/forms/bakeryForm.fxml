@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-
-<AnchorPane prefHeight="400.0" prefWidth="620.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ui.controllers.BakeryForm">
+<AnchorPane fx:id="mainPane" prefHeight="400.0" prefWidth="620.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="app.graphic.ui.controllers.BakeryForm">
   <ImageView id="emtyImage" fx:id="emptyImage" fitHeight="402.0" fitWidth="622.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
     <Image url="@../img/bakery/empty.png" />
   </ImageView>
@@ -23,6 +20,7 @@
   <ImageView fx:id="cakeImage" fitHeight="79.0" fitWidth="79.0" layoutX="189.0" layoutY="201.0" pickOnBounds="true" preserveRatio="true">
     <Image url="@../img/bakery/Chocolate_Cake.png" />
   </ImageView>
+  <Button fx:id="cakeButton" layoutX="189.0" layoutY="201.0" mnemonicParsing="false" />
   <ImageView id="cakeImage" fx:id="boxImage" fitHeight="72.21500015258789" fitWidth="123.44444429770239" layoutX="173.0" layoutY="205.0" pickOnBounds="true" preserveRatio="true">
     <Image url="@../img/bakery/White_Gift_Box_Png_Clipart_Image.png" />
   </ImageView>
@@ -41,5 +39,5 @@
   </ImageView>
   <TextArea fx:id="sellerTextArea" editable="false" layoutX="28.0" layoutY="14.0" prefHeight="117.0" prefWidth="175.0" wrapText="true" />
   <Button fx:id="nextStepButton" layoutX="15.0" layoutY="368.0" mnemonicParsing="false" onMouseClicked="#nextStep" text="-&gt;" />
-  <TextArea fx:id="caseShow" editable="false" layoutX="28.0" layoutY="14.0" prefHeight="375.0" prefWidth="175.0" wrapText="true" />
+  <FlowPane fx:id="showCaseFlowPane" layoutX="28.0" layoutY="14.0" prefHeight="333.0" prefWidth="565.0" />
 </AnchorPane>

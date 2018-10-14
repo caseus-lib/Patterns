@@ -1,12 +1,12 @@
 package app;
 
-import magical.kitchen.Cooker;
-import magical.kitchen.Fridge;
-import magical.kitchen.ShowCase;
-import magical.powers.Happiness;
-import magical.powers.Responsibility;
-import magical.powers.Strength;
-import magical.products.SimpleMagicalProduct;
+import environment.kitchen.Cooker;
+import environment.kitchen.Fridge;
+import environment.kitchen.ShowCase;
+import environment.magical.powers.Happiness;
+import environment.magical.powers.Responsibility;
+import environment.magical.powers.Strength;
+import environment.products.SimpleMagicalProduct;
 
 public class Initialization {
 

@@ -1,5 +1,9 @@
 package app;
 
+import app.console.ConsoleApp;
+import app.executor.Work;
+import app.graphic.GraphicApp;
+
 public class ApplicationCreator implements Application {
 
     @Override
@@ -12,7 +16,7 @@ public class ApplicationCreator implements Application {
         }
     }
 
-    private boolean  findIfApplicationIsGraphic() {
+    private boolean findIfApplicationIsGraphic() {
         return(System.getProperty("graphic", "true").equals("true"));
     }
 

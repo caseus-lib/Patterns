@@ -1,6 +1,6 @@
 package iterator;
 
-import magical.powers.BooleanAction;
+import environment.magical.powers.BooleanAction;
 
 import java.util.List;
 

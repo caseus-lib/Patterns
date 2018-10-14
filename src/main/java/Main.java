@@ -1,7 +1,4 @@
 import app.*;
-import app.App;
-import creatures.Person;
-import sale.Bakery;
 
 public class Main {
 
