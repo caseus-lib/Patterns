@@ -1,15 +1,19 @@
 package app.console;
 
-import app.executor.Steps;
+import app.console.view.ProductDescriptionFactory;
 import app.executor.Behavior;
 import app.executor.BehaviorExecutor;
+import app.executor.Steps;
+import app.executor.StepsWorker;
+import app.graphic.ui.services.Size;
 import environment.creatures.Person;
 import environment.creatures.Unicorn;
 import environment.kitchen.ShowCase;
 import environment.magical.powers.MagicalPower;
 import environment.products.Product;
 import environment.sale.MagicalAdapter;
-import app.executor.StepsWorker;
+import exception.NoProductFound;
+import printer.ProductViewFactory;
 
 import java.util.Optional;
 import java.util.Scanner;
@@ -19,6 +23,7 @@ public class ConsoleOutput implements Steps {
 
     private Behavior executor = new BehaviorExecutor();
     private Scanner scanner = new Scanner(System.in);
+    private ProductViewFactory productViewFactory = ProductDescriptionFactory.getInstance();
 
     private void printComment(String comment) {
         System.out.println("\n------" + comment + "------\n");
@@ -98,16 +103,16 @@ public class ConsoleOutput implements Steps {
         if (executor.isBoxActive()) {
             Product product = executor.askForBox();
             printSellerReplica(
-                    "Держите " + product.toString() + "\n" +
+                    "Держите " + productViewFactory.getProductImage(product, new Size(0, 0)) + "\n" +
                             "Состав коробки:\n" + product.getInfoAboutComponents()
             );
-            printComment("На прилавке появляется сладость");
+            printComment("На прилавке появляется коробка");
         } else {
             Optional<Product> optionalProduct = executor.askForProduct();
             if (optionalProduct.isPresent()) {
                 Product product = optionalProduct.get();
                 executor.saleProduct(product);
-                printSellerReplica("Держите " + product.toString());
+                printSellerReplica("Держите " + productViewFactory.getProductImage(product, new Size(0, 0)));
                 printComment("На прилавке появляется сладость");
             } else {
                 printSellerReplica("К сожалению, все законичилось. Приходите завтра!");
@@ -121,7 +126,9 @@ public class ConsoleOutput implements Steps {
         if (optionalProduct.isPresent()) {
             Product product = optionalProduct.get();
             executor.saleProduct(product);
-            String message = "Без специй:\n" + product.getName() + "\n" + product.getMagicalPowerList().toString();
+            String message = "Без специй:\n" +
+                    product.getName()
+                    + "\n" + product.getMagicalPowerList().toString();
             product = executor.decorateProduct();
             printSellerReplica(message + "\nСо специями:\n" +
                     product.getName() + "\n" + product.getMagicalPowerList().toString());
@@ -148,10 +155,17 @@ public class ConsoleOutput implements Steps {
     public void watchShowCase() {
         printComment("Открывается прилавок");
         printComment("Его содержимое" +
-                ShowCase.getInstance().getAllProducts()
+                ShowCase.getInstance().getProductAmountMap().entrySet()
                         .stream()
-                        .map(bake -> bake.getName() + "\n" + bake.getInfoAboutComponents()).
-                        collect(Collectors.joining("\n"))
+                        .map(entry -> {
+                            Product product = ShowCase.getInstance().getByName(entry.getKey())
+                                    .orElseThrow(() -> new NoProductFound(entry.getKey()));
+                            return productViewFactory.getProductImage(product,
+                                    new Size(100, 100))
+                                    + "\n количество:" + entry.getValue()
+                                    + "\n" + product.getInfoAboutComponents();
+                        })
+                        .collect(Collectors.joining("\n\n"))
         );
     }
 

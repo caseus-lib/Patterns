@@ -21,9 +21,10 @@ import environment.sale.Bakery;
 import environment.sale.MagicalAdapter;
 import environment.sale.SellerProxy;
 import app.executor.StepsWorker;
-import app.graphic.ui.components.ProductImageButton;
-import app.graphic.ui.components.ProductImageFactory;
+import app.graphic.ui.view.ProductImageButton;
+import app.graphic.ui.view.ProductImageFactory;
 import app.graphic.ui.services.Size;
+import printer.ProductViewFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +58,7 @@ public class BakeryForm extends Controller implements Steps {
     private MagicalPower magicalPower;
     private OrdinalCreature ordinalCreature;
     private boolean getBox = false;
-    private ProductImageFactory productImageFactory = ProductImageFactory.getInstance();
+    private ProductViewFactory productImageFactory = ProductImageFactory.getInstance();
 
     @FXML
     private void initialize() {
@@ -81,7 +82,7 @@ public class BakeryForm extends Controller implements Steps {
 
     private void initShowCase() {
         ShowCase.getInstance().getProductAmountMap().forEach((s, integer) -> {
-            ProductImageButton productImage = productImageFactory.getProductImage(
+            ProductImageButton productImage = (ProductImageButton) productImageFactory.getProductImage(
                     ShowCase.getInstance().getByName(s).orElseThrow(() -> new NoProductFound(s)),
                     new Size(100, 100));
             productImage.setTooltip(new Tooltip(integer.toString()));
@@ -187,7 +188,8 @@ public class BakeryForm extends Controller implements Steps {
                     "Держите " + product.toString() + "\n" +
                             "Состав коробки:\n" + product.getInfoAboutComponents()
             );
-            boxImage.setVisible(true);
+            updateButton();
+            cakeButton.setVisible(true);
         } else {
             Optional<Product> optionalProduct = seller.hasProduct(magicalPower);
             if (optionalProduct.isPresent()) {
@@ -204,7 +206,7 @@ public class BakeryForm extends Controller implements Steps {
 
     private void updateButton() {
         mainPane.getChildren().remove(cakeButton);
-        cakeButton = productImageFactory.getProductImage(product, new Size(50, 50));
+        cakeButton = (ProductImageButton) productImageFactory.getProductImage(product, new Size(50, 50));
         cakeButton.setLayoutX(177);
         cakeButton.setLayoutY(200);
         mainPane.getChildren().add(cakeButton);
