@@ -1,25 +1,26 @@
 package app.graphic.ui.controllers;
 
+import app.executor.Behavior;
+import app.executor.BehaviorExecutor;
 import app.executor.Steps;
 import app.executor.StepsWorker;
 import app.graphic.ui.services.Size;
 import app.graphic.ui.view.ProductImageButton;
 import app.graphic.ui.view.ProductImageFactory;
+import enums.Color;
 import enums.ContextType;
-import environment.creatures.OrdinalCreature;
 import environment.creatures.Person;
 import environment.creatures.Unicorn;
-import environment.kitchen.BoxMaker;
 import environment.kitchen.ShowCase;
 import environment.magical.powers.MagicalPower;
 import environment.products.Product;
-import environment.products.SpiceDecorator;
-import environment.sale.Bakery;
+import environment.products.SweetBox;
 import environment.sale.MagicalAdapter;
-import environment.sale.SellerProxy;
 import exception.NoProductFound;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -49,16 +50,17 @@ public class BakeryForm extends Controller implements Steps {
     public Button nextStepButton;
     public FlowPane showCaseFlowPane;
     public AnchorPane mainPane;
+    public RadioButton redColor;
+    public RadioButton greenColor;
+    public RadioButton blueColor;
+    public CheckBox withBow;
+    public AnchorPane boxPane;
 
     private List<ImageView> images;
 
-    private StepsWorker stepsWorker;
+    private Behavior executor = new BehaviorExecutor();
 
-    private Bakery seller;
-    private Product product;
-    private MagicalPower magicalPower;
-    private OrdinalCreature ordinalCreature;
-    private boolean getBox = false;
+    private StepsWorker stepsWorker;
     private ProductViewFactory productImageFactory = ProductImageFactory.getInstance();
 
     @FXML
@@ -73,7 +75,6 @@ public class BakeryForm extends Controller implements Steps {
         images.add(magicImage);
         images.add(emptyImage);
         images.add(customerDialogImage);
-        seller = new SellerProxy();
         stepsWorker = new StepsWorker(this);
         cakeButton.setVisible(false);
         initShowCase();
@@ -95,7 +96,7 @@ public class BakeryForm extends Controller implements Steps {
         hideAll();
         setCustomerVisible(girlImage);
         customerTextArea.setText("Добрый день!");
-        ordinalCreature = new Person("Мария");
+        executor.assignNewOrdinalCreature(new Person("Мария"));
     }
 
     @Override
@@ -103,7 +104,7 @@ public class BakeryForm extends Controller implements Steps {
         hideAll();
         setCustomerVisible(boyImage);
         customerTextArea.setText("Здравствуйте!");
-        ordinalCreature = new Person("Павел");
+        executor.assignNewOrdinalCreature(new Person("Павел"));
     }
 
     @Override
@@ -111,40 +112,39 @@ public class BakeryForm extends Controller implements Steps {
         hideAll();
         setCustomerVisible(unicornImage);
         customerTextArea.setText("Gjkzdadioadk!");
-        ordinalCreature = new MagicalAdapter(new Unicorn());
+        executor.assignNewOrdinalCreature(new MagicalAdapter(new Unicorn()));
     }
 
     @Override
     public void personRequestsForMinPower() {
-        magicalPower = ordinalCreature.getMinPower();
-        customerTextArea.setText("Мои силы: \n" + ordinalCreature.toString() +
-                "Мне бы добавить себе такой силы, как: " + magicalPower.getName());
-        getBox = false;
+        MagicalPower magicalPower = executor.retrieveOrdinalCreatureMinPower();
+        customerTextArea.setText("Мои силы: \n" + executor.retrieveCreatureInformation() +
+                                 "Мне бы добавить себе такой силы, как: " + magicalPower.getName());
+        executor.setBoxActiveState(false);
     }
 
     @Override
     public void personRequestsForBox() {
-        getBox = true;
+        executor.setBoxActiveState(true);
         customerTextArea.setText("Соберите мне, пожалуйста, волшебную коробку со сладостями");
+        showBoxParameters(true);
     }
 
     @Override
     public void unicornRequestsForRainbow() {
-        getBox = false;
+        executor.setBoxActiveState(false);
         customerTextArea.setText("Tsejf ksjdfuwn jfuiwkw kdmkfs");
     }
 
     @Override
     public void personGetsProduct() {
-        ordinalCreature.consume(product);
-        customerTextArea.setText("Спасибо! Теперь мои силы: \n" + ordinalCreature.toString());
+        executor.consumeProduct();
+        customerTextArea.setText("Спасибо! Теперь мои силы: \n" + executor.retrieveCreatureInformation());
     }
 
     @Override
     public void unicornGetsProduct() {
-        magicImage.setVisible(false);
-        ordinalCreature.consume(product);
-        rainbowImage.setVisible(true);
+        executor.consumeProduct();
         customerTextArea.setText("Thfjsnfussk!");
     }
 
@@ -156,24 +156,24 @@ public class BakeryForm extends Controller implements Steps {
 
     @Override
     public void personRequestsForMinPowerWithSpice() {
-        magicalPower = ordinalCreature.getMinPower();
-        customerTextArea.setText("Мои силы: \n" + ordinalCreature.toString() +
-                "Мне бы добавить себе такой силы, как: " + magicalPower.getName() +
-                "\nИ обязательно добавить специй!");
-        getBox = false;
+        MagicalPower magicalPower = executor.retrieveOrdinalCreatureMinPower();
+        customerTextArea.setText("Мои силы: \n" + executor.retrieveCreatureInformation() +
+                                 "Мне бы добавить себе такой силы, как: " + magicalPower.getName() +
+                                 "\nИ обязательно добавить специй!");
+        executor.setBoxActiveState(false);
     }
 
     @Override
     public void sellerGivesProductWithSpice() {
-        Optional<Product> optionalProduct = seller.hasProduct(magicalPower);
+        Optional<Product> optionalProduct = executor.askForProduct();
         if (optionalProduct.isPresent()) {
-            product = optionalProduct.get();
-            seller.saleProduct(product);
+            Product product = optionalProduct.get();
+            executor.saleProduct(product);
             String message = "Без специй:\n" + product.getName() + "\n" + product.getMagicalPowerList().toString();
-            product = new SpiceDecorator(product);
+            product = executor.decorateProduct();
             sellerTextArea.setText(message + "\nСо специями:\n" +
-                    product.getName() + "\n" + product.getMagicalPowerList().toString());
-            updateButton();
+                                   product.getName() + "\n" + product.getMagicalPowerList().toString());
+            updateButton(product);
             cakeButton.setVisible(true);
         } else {
             sellerTextArea.setText("К сожалению, все законичилось. Приходите завтра!");
@@ -182,21 +182,23 @@ public class BakeryForm extends Controller implements Steps {
 
     @Override
     public void sellerGivesProduct() {
-        if (getBox) {
-            product = BoxMaker.createRandomBox();
+        if (executor.isBoxActive()) {
+            showBoxParameters(true);
+            SweetBox product = executor.askForBox();
+            buildBox(product);
+            updateButton(product);
             sellerTextArea.setText(
-                    "Держите " + product.toString() + "\n" +
-                            "Состав коробки:\n" + product.getInfoAboutComponents()
-            );
-            updateButton();
+                    "Держите волшебный набор" + "\n" +
+                    "Состав коробки:\n" + product.getInfoAboutComponents()
+                                  );
             cakeButton.setVisible(true);
         } else {
-            Optional<Product> optionalProduct = seller.hasProduct(magicalPower);
+            Optional<Product> optionalProduct = executor.askForProduct();
             if (optionalProduct.isPresent()) {
-                product = optionalProduct.get();
-                seller.saleProduct(product);
+                Product product = optionalProduct.get();
+                executor.saleProduct(product);
                 sellerTextArea.setText("Держите " + product.toString());
-                updateButton();
+                updateButton(product);
                 cakeButton.setVisible(true);
             } else {
                 sellerTextArea.setText("К сожалению, все законичилось. Приходите завтра!");
@@ -204,10 +206,30 @@ public class BakeryForm extends Controller implements Steps {
         }
     }
 
-    private void updateButton() {
+    private void buildBox(SweetBox box) {
+        if (redColor.isSelected())
+            box.buildColorBox(Color.RED);
+        else {
+            if (greenColor.isSelected())
+                box.buildColorBox(Color.GREEN);
+            else {
+                if (blueColor.isSelected())
+                    box.buildColorBox(Color.BLUE);
+                else
+                    box.buildColorBox(Color.WHITE);
+            }
+        }
+        if (withBow.isSelected()) {
+            box.buildBoxWithBow();
+        }
+        box.setName(box.getColor() + (box.getWithBow() ? "-bow" : ""));
+    }
+
+    private void updateButton(Product product) {
         mainPane.getChildren().remove(cakeButton);
         cakeButton = (ProductImageButton) productImageFactory.getProductImage(product,
-                new Context(ContextType.GOODS, new Size(50, 50)));
+                                                                              new Context(ContextType.GOODS,
+                                                                                          new Size(50, 50)));
         cakeButton.setLayoutX(177);
         cakeButton.setLayoutY(200);
         mainPane.getChildren().add(cakeButton);
@@ -229,6 +251,15 @@ public class BakeryForm extends Controller implements Steps {
         customerTextArea.setVisible(false);
         showCaseFlowPane.setVisible(false);
         cakeButton.setVisible(false);
+        showBoxParameters(false);
+    }
+
+    private void showBoxParameters (boolean value){
+        boxPane.setVisible(value);
+        greenColor.setVisible(value);
+        redColor.setVisible(value);
+        blueColor.setVisible(value);
+        withBow.setVisible(value);
     }
 
     public void nextStep() {

@@ -2,6 +2,6 @@ package enums;
 
 public enum ContextType {
 
-    SHOW_CASE, GOODS
+    SHOW_CASE, GOODS, BOX
 
 }

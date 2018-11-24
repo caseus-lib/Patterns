@@ -30,6 +30,10 @@ public class ProductImageButton extends Button implements ProductView {
         changeState();
     }
 
+    public void setImage(ImageView image) {
+        this.image = image;
+    }
+
     private void initNode() {
         this.setOnMouseClicked(event -> changeState());
     }
@@ -47,14 +51,17 @@ public class ProductImageButton extends Button implements ProductView {
 
     @Override
     public void setState(Context context) {
-        if (context.getContextType() == ContextType.SHOW_CASE) {
+        if (context.getContextType() == ContextType.BOX) {
+            text = "Волшебная коробка" +
+                   "\nСтоимость: " + Counter.getInstance().countTotalProductCost(product);
+            setTooltip(null);
+        } else if (context.getContextType() == ContextType.SHOW_CASE) {
             text = product.getName() +
-                    "\n" + product.getInfoAboutComponents();
+                   "\n" + product.getInfoAboutComponents();
             setTooltip(new Tooltip(context.getAmount().toString()));
-        }
-        else {
+        } else {
             text = product.getName() +
-                    "\nСтоимость: " + Counter.getInstance().countTotalProductCost(product);
+                   "\nСтоимость: " + Counter.getInstance().countTotalProductCost(product);
             setTooltip(null);
         }
         image.setFitHeight(context.getSize().getY());

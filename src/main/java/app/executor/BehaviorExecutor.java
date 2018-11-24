@@ -5,6 +5,7 @@ import environment.kitchen.BoxMaker;
 import environment.magical.powers.MagicalPower;
 import environment.products.Product;
 import environment.products.SpiceDecorator;
+import environment.products.SweetBox;
 import environment.sale.Bakery;
 import environment.sale.SellerProxy;
 
@@ -39,8 +40,10 @@ public class BehaviorExecutor implements Behavior {
     }
 
     @Override
-    public Product askForBox() {
-        return product = BoxMaker.createRandomBox();
+    public SweetBox askForBox() {
+        SweetBox randomBox = BoxMaker.createRandomBox();
+        product = randomBox;
+        return randomBox;
     }
 
     @Override
