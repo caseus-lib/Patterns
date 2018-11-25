@@ -1,13 +1,13 @@
 package enums;
 
-public enum State {
+public enum OrderState {
 
     WAITING("Ожидание"),
     COOKING("Готовится"),
     READY("Готов");
 
     private final String name;
-    State(String name) { this.name = name; }
+    OrderState(String name) { this.name = name; }
     public String getName() { return name; }
 
 }

@@ -1,30 +1,31 @@
 package process.model;
 
-import enums.Goods;
-import enums.State;
+import enums.OrderState;
+import enums.ProductType;
+import process.observer.Subject;
 
-public class Order {
+public class Order extends Subject {
 
-    private Goods productType;
+    private ProductType productType;
     private int amount;
-    private State state;
+    private OrderState orderState;
     private int orderNumber;
 
     public Order() {
     }
 
-    public Order(Goods productType, int amount, State state, int orderNumber) {
+    public Order(ProductType productType, int amount, int orderNumber) {
         this.productType = productType;
         this.amount = amount;
-        this.state = state;
         this.orderNumber = orderNumber;
     }
 
-    public void setState(State state) {
-        this.state = state;
+    public void setOrderState(OrderState orderState) {
+        this.orderState = orderState;
+        notifyObserver();
     }
 
-    public Goods getProductType() {
+    public ProductType getProductType() {
         return productType;
     }
 
@@ -32,8 +33,8 @@ public class Order {
         return amount;
     }
 
-    public State getState() {
-        return state;
+    public OrderState getOrderState() {
+        return orderState;
     }
 
     public int getOrderNumber() {

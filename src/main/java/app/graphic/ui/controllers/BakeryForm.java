@@ -17,14 +17,14 @@ import environment.products.Product;
 import environment.products.SweetBox;
 import environment.sale.MagicalAdapter;
 import exception.NoProductFound;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.FlowPane;
+import process.hall.Monitor;
+import process.observer.Observer;
+import process.observer.Subject;
 import viewer.Context;
 import viewer.ProductViewFactory;
 
@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class BakeryForm extends Controller implements Steps {
+public class BakeryForm extends Controller implements Steps, Observer {
 
     public ImageView girlImage;
     public ImageView boyImage;
@@ -48,13 +48,15 @@ public class BakeryForm extends Controller implements Steps {
     public ImageView customerDialogImage;
     public ImageView sellerDialogImage;
     public Button nextStepButton;
-    public FlowPane showCaseFlowPane;
     public AnchorPane mainPane;
     public RadioButton redColor;
     public RadioButton greenColor;
     public RadioButton blueColor;
     public CheckBox withBow;
     public AnchorPane boxPane;
+    public ListView<Integer> inWaitingListView;
+    public ListView<Integer> cookingListView;
+    public ListView<Integer> readyListView;
 
     private List<ImageView> images;
 
@@ -62,6 +64,7 @@ public class BakeryForm extends Controller implements Steps {
 
     private StepsWorker stepsWorker;
     private ProductViewFactory productImageFactory = ProductImageFactory.getInstance();
+    private Monitor monitor = new Monitor();
 
     @FXML
     private void initialize() {
@@ -87,7 +90,6 @@ public class BakeryForm extends Controller implements Steps {
             ProductImageButton productImage = (ProductImageButton) productImageFactory.getProductImage(
                     ShowCase.getInstance().getByName(s).orElseThrow(() -> new NoProductFound(s)),
                     new Context(ContextType.SHOW_CASE, new Size(100, 100), integer));
-            showCaseFlowPane.getChildren().add(productImage);
         });
     }
 
@@ -237,7 +239,7 @@ public class BakeryForm extends Controller implements Steps {
 
     @Override
     public void watchShowCase() {
-        showCaseFlowPane.setVisible(true);
+
     }
 
     private void setCustomerVisible(ImageView imageView) {
@@ -249,12 +251,11 @@ public class BakeryForm extends Controller implements Steps {
     private void hideAll() {
         images.forEach(imageView -> imageView.setVisible(false));
         customerTextArea.setVisible(false);
-        showCaseFlowPane.setVisible(false);
         cakeButton.setVisible(false);
         showBoxParameters(false);
     }
 
-    private void showBoxParameters (boolean value){
+    private void showBoxParameters(boolean value) {
         boxPane.setVisible(value);
         greenColor.setVisible(value);
         redColor.setVisible(value);
@@ -264,5 +265,14 @@ public class BakeryForm extends Controller implements Steps {
 
     public void nextStep() {
         stepsWorker.nextStep();
+    }
+
+    @Override
+    public void update(Subject subject) {
+        if (subject instanceof Monitor) {
+            inWaitingListView.setItems(FXCollections.observableArrayList(monitor.getWaitingOrderList()));
+            cookingListView.setItems(FXCollections.observableArrayList(monitor.getCookingOrderList()));
+            readyListView.setItems(FXCollections.observableArrayList(monitor.getReadyOrderList()));
+        }
     }
 }

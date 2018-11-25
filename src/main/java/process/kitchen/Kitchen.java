@@ -1,6 +1,6 @@
 package process.kitchen;
 
-import enums.State;
+import enums.OrderState;
 import environment.products.Product;
 import environment.products.SimpleMagicalProduct;
 import process.model.Order;
@@ -9,12 +9,21 @@ import static java.lang.Thread.sleep;
 
 public class Kitchen {
 
+    private static Kitchen ourInstance = new Kitchen();
+
+    public static Kitchen getInstance() {
+        return ourInstance;
+    }
+
+    private Kitchen() {
+    }
+
     public Product startCook(Order order) {
         try {
-            System.out.println(order.getState());
+            System.out.println(order.getOrderState());
             sleep(2);
-            order.setState(State.COOKING);
-            System.out.println(order.getState());
+            order.setOrderState(OrderState.COOKING);
+            System.out.println(order.getOrderState());
             sleep(2);
             return cookProduct(order);
         } catch (InterruptedException e) {
@@ -23,8 +32,8 @@ public class Kitchen {
     }
 
     private Product cookProduct(Order order) {
-        order.setState(State.READY);
-        System.out.println(order.getState());
+        order.setOrderState(OrderState.READY);
+        System.out.println(order.getOrderState());
         return new SimpleMagicalProduct();
     }
 

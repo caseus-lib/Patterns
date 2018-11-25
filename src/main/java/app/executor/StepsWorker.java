@@ -8,9 +8,12 @@ import java.util.List;
 
 public class StepsWorker {
 
-    private List<Runnable> stepsArray;
+    protected List<Runnable> stepsArray;
     private Iterator<Runnable> iterator;
     private Steps steps;
+
+    public StepsWorker() {
+    }
 
     public StepsWorker(Steps steps) {
         this.steps = steps;
@@ -19,7 +22,7 @@ public class StepsWorker {
         iterator.first();
     }
 
-    private void initSteps() {
+    protected void initSteps() {
         stepsArray = new ArrayList<>();
         stepsArray.add(() -> steps.watchShowCase());
         stepsArray.add(() -> steps.girlHasCame());

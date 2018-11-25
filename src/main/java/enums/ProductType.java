@@ -1,13 +1,13 @@
 package enums;
 
-public enum  Goods {
+public enum ProductType {
 
     CAKE("Кекс"),
     CANDY("Конфетка"),
     BISCUIT("Печенье");
 
     private final String name;
-    Goods(String name) { this.name = name; }
+    ProductType(String name) { this.name = name; }
     public String getName() { return name; }
 
 }
