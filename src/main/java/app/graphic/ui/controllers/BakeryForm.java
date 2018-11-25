@@ -10,27 +10,27 @@ import environment.creatures.Unicorn;
 import environment.products.Product;
 import environment.sale.MagicalAdapter;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
 import process.bakery.BakeryShopBehavior;
 import process.bakery.BakeryShopBehaviorExecutor;
 import process.bakery.BakeryShopSteps;
 import process.bakery.BakeryShopStepsWorker;
 import process.hall.Monitor;
-import process.observer.Observer;
-import process.observer.Subject;
+import process.kitchen.ExtraditionPlace;
+import process.model.Order;
 import viewer.Context;
 import viewer.ProductViewFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BakeryForm extends Controller implements BakeryShopSteps, Observer {
+public class BakeryForm extends Controller implements BakeryShopSteps {
 
     public ImageView girlImage;
     public ImageView boyImage;
@@ -50,6 +50,7 @@ public class BakeryForm extends Controller implements BakeryShopSteps, Observer 
     public ListView<Integer> inWaitingListView;
     public ListView<Integer> cookingListView;
     public ListView<Integer> readyListView;
+    public FlowPane extraditionPane;
 
     private List<ImageView> images;
 
@@ -58,7 +59,7 @@ public class BakeryForm extends Controller implements BakeryShopSteps, Observer 
     private BakeryShopStepsWorker stepsWorker;
     private ProductViewFactory productImageFactory = ProductImageFactory.getInstance();
     private Monitor monitor = Monitor.getInstance();
-    private ObservableList<String> inWaitingList;
+    private ExtraditionPlace extraditionPlace = ExtraditionPlace.getInstance();
 
     @FXML
     private void initialize() {
@@ -76,7 +77,6 @@ public class BakeryForm extends Controller implements BakeryShopSteps, Observer 
         cakeButton.setVisible(false);
         hideAll();
         emptyImage.setVisible(true);
-        monitor.attach(this);
     }
 
     @Override
@@ -128,14 +128,26 @@ public class BakeryForm extends Controller implements BakeryShopSteps, Observer 
         executor.acceptOrder();
     }
 
-    private void updateButton(Product product) {
-        mainPane.getChildren().remove(cakeButton);
-        cakeButton = (ProductImageButton) productImageFactory.getProductImage(product,
-                                                                              new Context(ContextType.GOODS,
-                                                                                          new Size(50, 50)));
-        cakeButton.setLayoutX(177);
-        cakeButton.setLayoutY(200);
-        mainPane.getChildren().add(cakeButton);
+    private Button buildProductButton(Product product) {
+        return (ProductImageButton) productImageFactory.getProductImage(product,
+                                                                        new Context(ContextType.POOL,
+                                                                                    new Size(50, 50)));
+    }
+
+    private void buildExtraditionPlace() {
+        extraditionPane.getChildren().clear();
+        extraditionPlace.getReadyOrderList().forEach((order, products) -> {
+            extraditionPane.getChildren().add(buildOrderButton(order));
+            products.forEach(product -> extraditionPane.getChildren().add(buildProductButton(product)));
+        });
+    }
+
+    private Button buildOrderButton(Order order) {
+        Button button = new Button();
+        button.setText(order.getOrderNumber() + "");
+        button.setOnMouseClicked(event -> extraditionPlace.remove(order));
+        button.setMinWidth(extraditionPane.getPrefWidth());
+        return button;
     }
 
     private void setCustomerVisible(ImageView imageView) {
@@ -155,17 +167,14 @@ public class BakeryForm extends Controller implements BakeryShopSteps, Observer 
         stepsWorker.nextStep();
     }
 
-    @Override
-    public void update(Subject subject) {
-        if (subject instanceof Monitor) {
-            updateWaitingList();
-            updateCookingList();
-            updateReadyList();
-        }
+    public void update() {
+        updateWaitingList();
+        updateCookingList();
+        updateReadyList();
+        buildExtraditionPlace();
     }
 
     private synchronized void updateWaitingList() {
-        System.out.println(Thread.currentThread().getId());
         inWaitingListView.setItems(FXCollections.observableArrayList(monitor.getWaitingOrderList()));
     }
 

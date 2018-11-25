@@ -1,7 +1,6 @@
 package app;
 
 import environment.Counter;
-import environment.kitchen.Cooker;
 import environment.kitchen.Fridge;
 import environment.kitchen.ShowCase;
 import environment.magical.powers.Happiness;
@@ -42,7 +41,7 @@ public class Initialization {
 
     public static void init() {
         addSimpleProducts();
-        for (int i = 0; i < 8; i++) {
+        /*for (int i = 0; i < 8; i++) {
             showCase.add(Cooker.cookCake());
         }
         for (int i = 0; i < 20; i++) {
@@ -50,7 +49,7 @@ public class Initialization {
         }
         for (int i = 0; i < 16; i++) {
             showCase.add(Cooker.cookBiscuit());
-        }
+        }*/
     }
 
 }

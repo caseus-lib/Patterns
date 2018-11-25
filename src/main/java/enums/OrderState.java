@@ -4,7 +4,8 @@ public enum OrderState {
 
     WAITING("Ожидание"),
     COOKING("Готовится"),
-    READY("Готов");
+    READY("Готов"),
+    RELEASED("Отдан");
 
     private final String name;
     OrderState(String name) { this.name = name; }

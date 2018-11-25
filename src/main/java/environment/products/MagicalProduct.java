@@ -91,8 +91,8 @@ public class MagicalProduct implements Product {
                 .collect(Collectors.joining("\n"));
     }
 
-    @Override
+    /*@Override
     public String toString() {
         return name;
-    }
+    }*/
 }

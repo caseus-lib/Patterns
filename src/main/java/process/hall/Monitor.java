@@ -29,7 +29,9 @@ public class Monitor extends Subject implements Observer {
             System.out.println("-----UPDATE");
             Order order = ((Order) subject);
             orders.forEach((orderState, orderList) -> orderList.remove(order));
-            orders.get(order.getOrderState()).add(order);
+            if(!order.getOrderState().equals(OrderState.RELEASED)) {
+                orders.get(order.getOrderState()).add(order);
+            }
             notifyObserver();
         }
     }
@@ -43,9 +45,5 @@ public class Monitor extends Subject implements Observer {
 
     public synchronized List<Integer> getReadyOrderList() {
         return orders.get(OrderState.READY).stream().map(Order::getOrderNumber).collect(Collectors.toList());
-    }
-
-    public Map<OrderState, List<Order>> getOrders() {
-        return orders;
     }
 }

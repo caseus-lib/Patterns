@@ -1,7 +1,6 @@
 package process.kitchen;
 
 import enums.OrderState;
-import environment.products.Product;
 import process.model.Order;
 
 import java.util.concurrent.CompletableFuture;
@@ -20,13 +19,7 @@ public class Manager {
 
     public void acceptOrder(Order order) {
         order.setOrderState(OrderState.WAITING);
-        System.out.println(order.getOrderState());
-        CompletableFuture.supplyAsync(() -> kitchen.startCook(order))
-                         .thenAccept(this::acceptProduct);
-    }
-
-    public void acceptProduct(Product product) {
-
+        CompletableFuture.supplyAsync(() -> kitchen.startCook(order));
     }
 
 

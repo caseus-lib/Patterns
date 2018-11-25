@@ -1,6 +1,5 @@
 package app.graphic.ui.view;
 
-import enums.ContextType;
 import environment.Counter;
 import environment.products.Product;
 import javafx.scene.control.Button;
@@ -51,18 +50,27 @@ public class ProductImageButton extends Button implements ProductView {
 
     @Override
     public void setState(Context context) {
-        if (context.getContextType() == ContextType.BOX) {
-            text = "Волшебная коробка" +
-                   "\nСтоимость: " + Counter.getInstance().countTotalProductCost(product);
-            setTooltip(null);
-        } else if (context.getContextType() == ContextType.SHOW_CASE) {
-            text = product.getName() +
-                   "\n" + product.getInfoAboutComponents();
-            setTooltip(new Tooltip(context.getAmount().toString()));
-        } else {
-            text = product.getName() +
-                   "\nСтоимость: " + Counter.getInstance().countTotalProductCost(product);
-            setTooltip(null);
+        switch(context.getContextType()) {
+            case BOX: {
+                text = "Волшебная коробка" +
+                       "\nСтоимость: " + Counter.getInstance().countTotalProductCost(product);
+                setTooltip(null);
+                break;
+            }
+            case SHOW_CASE: {
+                text = product.getName() +
+                       "\n" + product.getInfoAboutComponents();
+                setTooltip(new Tooltip(context.getAmount().toString()));
+                break;
+            }
+            case GOODS: {
+                text = product.getName() +
+                       "\nСтоимость: " + Counter.getInstance().countTotalProductCost(product);
+                setTooltip(new Tooltip(null));
+            }
+            case POOL: {
+                text = product + "";
+            }
         }
         image.setFitHeight(context.getSize().getY());
         image.setFitWidth(context.getSize().getX());
