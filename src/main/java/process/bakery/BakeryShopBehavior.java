@@ -1,5 +1,6 @@
 package process.bakery;
 
+import enums.ProductType;
 import environment.creatures.OrdinalCreature;
 
 public interface BakeryShopBehavior {
@@ -8,6 +9,7 @@ public interface BakeryShopBehavior {
     int generateOrderNumber();
     void acceptOrder();
     String retrieveCreatureInformation();
-
+    void askForProductAmount(ProductType productType, int amount);
+    String retrieveOrderInformation();
 
 }

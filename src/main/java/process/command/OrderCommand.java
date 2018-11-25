@@ -1,12 +1,14 @@
 package process.command;
 
 import enums.ProductType;
+import process.hall.Monitor;
 import process.kitchen.Manager;
 import process.model.Order;
 
 public class OrderCommand implements Command {
 
     private static final Manager manager = Manager.getInstance();
+    private static final Monitor monitor = Monitor.getInstance();
     private ProductType productType;
     private int amount;
     private int orderNumber;
@@ -23,6 +25,8 @@ public class OrderCommand implements Command {
     }
 
     private Order buildOrder(ProductType productType, int amount, int number) {
-        return new Order(productType, amount, number);
+        Order order = new Order(productType, amount, number);
+        order.attach(monitor);
+        return order;
     }
 }

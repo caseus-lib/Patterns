@@ -1,27 +1,26 @@
 package app.graphic.ui.controllers;
 
-import app.executor.Behavior;
-import app.executor.BehaviorExecutor;
-import app.executor.Steps;
-import app.executor.StepsWorker;
 import app.graphic.ui.services.Size;
 import app.graphic.ui.view.ProductImageButton;
 import app.graphic.ui.view.ProductImageFactory;
-import enums.Color;
 import enums.ContextType;
+import enums.ProductType;
 import environment.creatures.Person;
 import environment.creatures.Unicorn;
-import environment.kitchen.ShowCase;
-import environment.magical.powers.MagicalPower;
 import environment.products.Product;
-import environment.products.SweetBox;
 import environment.sale.MagicalAdapter;
-import exception.NoProductFound;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import process.bakery.BakeryShopBehavior;
+import process.bakery.BakeryShopBehaviorExecutor;
+import process.bakery.BakeryShopSteps;
+import process.bakery.BakeryShopStepsWorker;
 import process.hall.Monitor;
 import process.observer.Observer;
 import process.observer.Subject;
@@ -30,9 +29,8 @@ import viewer.ProductViewFactory;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-public class BakeryForm extends Controller implements Steps, Observer {
+public class BakeryForm extends Controller implements BakeryShopSteps, Observer {
 
     public ImageView girlImage;
     public ImageView boyImage;
@@ -49,22 +47,18 @@ public class BakeryForm extends Controller implements Steps, Observer {
     public ImageView sellerDialogImage;
     public Button nextStepButton;
     public AnchorPane mainPane;
-    public RadioButton redColor;
-    public RadioButton greenColor;
-    public RadioButton blueColor;
-    public CheckBox withBow;
-    public AnchorPane boxPane;
     public ListView<Integer> inWaitingListView;
     public ListView<Integer> cookingListView;
     public ListView<Integer> readyListView;
 
     private List<ImageView> images;
 
-    private Behavior executor = new BehaviorExecutor();
+    private BakeryShopBehavior executor = new BakeryShopBehaviorExecutor();
 
-    private StepsWorker stepsWorker;
+    private BakeryShopStepsWorker stepsWorker;
     private ProductViewFactory productImageFactory = ProductImageFactory.getInstance();
-    private Monitor monitor = new Monitor();
+    private Monitor monitor = Monitor.getInstance();
+    private ObservableList<String> inWaitingList;
 
     @FXML
     private void initialize() {
@@ -78,19 +72,11 @@ public class BakeryForm extends Controller implements Steps, Observer {
         images.add(magicImage);
         images.add(emptyImage);
         images.add(customerDialogImage);
-        stepsWorker = new StepsWorker(this);
+        stepsWorker = new BakeryShopStepsWorker(this);
         cakeButton.setVisible(false);
-        initShowCase();
         hideAll();
         emptyImage.setVisible(true);
-    }
-
-    private void initShowCase() {
-        ShowCase.getInstance().getProductAmountMap().forEach((s, integer) -> {
-            ProductImageButton productImage = (ProductImageButton) productImageFactory.getProductImage(
-                    ShowCase.getInstance().getByName(s).orElseThrow(() -> new NoProductFound(s)),
-                    new Context(ContextType.SHOW_CASE, new Size(100, 100), integer));
-        });
+        monitor.attach(this);
     }
 
     @Override
@@ -118,113 +104,28 @@ public class BakeryForm extends Controller implements Steps, Observer {
     }
 
     @Override
-    public void personRequestsForMinPower() {
-        MagicalPower magicalPower = executor.retrieveOrdinalCreatureMinPower();
-        customerTextArea.setText("Мои силы: \n" + executor.retrieveCreatureInformation() +
-                                 "Мне бы добавить себе такой силы, как: " + magicalPower.getName());
-        executor.setBoxActiveState(false);
+    public void personRequestsForCandy() {
+        customerTextArea.setText("Мне так хочется 5 конфет!");
+        executor.askForProductAmount(ProductType.CANDY, 5);
     }
 
     @Override
-    public void personRequestsForBox() {
-        executor.setBoxActiveState(true);
-        customerTextArea.setText("Соберите мне, пожалуйста, волшебную коробку со сладостями");
-        showBoxParameters(true);
+    public void personRequestsForBiscuit() {
+        customerTextArea.setText("Дайте мне, пожалуйста, 2 печеньки.");
+        executor.askForProductAmount(ProductType.BISCUIT, 2);
     }
 
     @Override
-    public void unicornRequestsForRainbow() {
-        executor.setBoxActiveState(false);
-        customerTextArea.setText("Tsejf ksjdfuwn jfuiwkw kdmkfs");
+    public void personRequestsForCake() {
+        customerTextArea.setText("Хочу торт!");
+        executor.askForProductAmount(ProductType.CAKE, 1);
     }
 
     @Override
-    public void personGetsProduct() {
-        executor.consumeProduct();
-        customerTextArea.setText("Спасибо! Теперь мои силы: \n" + executor.retrieveCreatureInformation());
-    }
-
-    @Override
-    public void unicornGetsProduct() {
-        executor.consumeProduct();
-        customerTextArea.setText("Thfjsnfussk!");
-    }
-
-    @Override
-    public void adapterWorks() {
-        cakeButton.setVisible(false);
-        magicImage.setVisible(true);
-    }
-
-    @Override
-    public void personRequestsForMinPowerWithSpice() {
-        MagicalPower magicalPower = executor.retrieveOrdinalCreatureMinPower();
-        customerTextArea.setText("Мои силы: \n" + executor.retrieveCreatureInformation() +
-                                 "Мне бы добавить себе такой силы, как: " + magicalPower.getName() +
-                                 "\nИ обязательно добавить специй!");
-        executor.setBoxActiveState(false);
-    }
-
-    @Override
-    public void sellerGivesProductWithSpice() {
-        Optional<Product> optionalProduct = executor.askForProduct();
-        if (optionalProduct.isPresent()) {
-            Product product = optionalProduct.get();
-            executor.saleProduct(product);
-            String message = "Без специй:\n" + product.getName() + "\n" + product.getMagicalPowerList().toString();
-            product = executor.decorateProduct();
-            sellerTextArea.setText(message + "\nСо специями:\n" +
-                                   product.getName() + "\n" + product.getMagicalPowerList().toString());
-            updateButton(product);
-            cakeButton.setVisible(true);
-        } else {
-            sellerTextArea.setText("К сожалению, все законичилось. Приходите завтра!");
-        }
-    }
-
-    @Override
-    public void sellerGivesProduct() {
-        if (executor.isBoxActive()) {
-            showBoxParameters(true);
-            SweetBox product = executor.askForBox();
-            buildBox(product);
-            updateButton(product);
-            sellerTextArea.setText(
-                    "Держите волшебный набор" + "\n" +
-                    "Состав коробки:\n" + product.getInfoAboutComponents()
-                                  );
-            cakeButton.setVisible(true);
-        } else {
-            Optional<Product> optionalProduct = executor.askForProduct();
-            if (optionalProduct.isPresent()) {
-                Product product = optionalProduct.get();
-                executor.saleProduct(product);
-                sellerTextArea.setText("Держите " + product.toString());
-                updateButton(product);
-                cakeButton.setVisible(true);
-            } else {
-                sellerTextArea.setText("К сожалению, все законичилось. Приходите завтра!");
-            }
-        }
-    }
-
-    private void buildBox(SweetBox box) {
-        if (redColor.isSelected())
-            box.buildColorBox(Color.RED);
-        else {
-            if (greenColor.isSelected())
-                box.buildColorBox(Color.GREEN);
-            else {
-                if (blueColor.isSelected())
-                    box.buildColorBox(Color.BLUE);
-                else
-                    box.buildColorBox(Color.WHITE);
-            }
-        }
-        if (withBow.isSelected()) {
-            box.buildBoxWithBow();
-        }
-        box.setName(box.getColor() + (box.getWithBow() ? "-bow" : ""));
+    public void sellerAcceptOrder() {
+        sellerTextArea.setText("Спасибо за заказ!\n" + executor.retrieveOrderInformation() +
+                               "\nНомер вашего заказа: " + executor.generateOrderNumber());
+        executor.acceptOrder();
     }
 
     private void updateButton(Product product) {
@@ -237,11 +138,6 @@ public class BakeryForm extends Controller implements Steps, Observer {
         mainPane.getChildren().add(cakeButton);
     }
 
-    @Override
-    public void watchShowCase() {
-
-    }
-
     private void setCustomerVisible(ImageView imageView) {
         imageView.setVisible(true);
         customerDialogImage.setVisible(true);
@@ -249,18 +145,10 @@ public class BakeryForm extends Controller implements Steps, Observer {
     }
 
     private void hideAll() {
+        sellerTextArea.setText("");
         images.forEach(imageView -> imageView.setVisible(false));
         customerTextArea.setVisible(false);
         cakeButton.setVisible(false);
-        showBoxParameters(false);
-    }
-
-    private void showBoxParameters(boolean value) {
-        boxPane.setVisible(value);
-        greenColor.setVisible(value);
-        redColor.setVisible(value);
-        blueColor.setVisible(value);
-        withBow.setVisible(value);
     }
 
     public void nextStep() {
@@ -270,9 +158,22 @@ public class BakeryForm extends Controller implements Steps, Observer {
     @Override
     public void update(Subject subject) {
         if (subject instanceof Monitor) {
-            inWaitingListView.setItems(FXCollections.observableArrayList(monitor.getWaitingOrderList()));
-            cookingListView.setItems(FXCollections.observableArrayList(monitor.getCookingOrderList()));
-            readyListView.setItems(FXCollections.observableArrayList(monitor.getReadyOrderList()));
+            updateWaitingList();
+            updateCookingList();
+            updateReadyList();
         }
+    }
+
+    private synchronized void updateWaitingList() {
+        System.out.println(Thread.currentThread().getId());
+        inWaitingListView.setItems(FXCollections.observableArrayList(monitor.getWaitingOrderList()));
+    }
+
+    private synchronized void updateCookingList() {
+        cookingListView.setItems(FXCollections.observableArrayList(monitor.getCookingOrderList()));
+    }
+
+    private synchronized void updateReadyList() {
+        readyListView.setItems(FXCollections.observableArrayList(monitor.getReadyOrderList()));
     }
 }

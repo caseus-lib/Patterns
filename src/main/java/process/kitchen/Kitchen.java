@@ -21,10 +21,10 @@ public class Kitchen {
     public Product startCook(Order order) {
         try {
             System.out.println(order.getOrderState());
-            sleep(2);
+            sleep(5000);
             order.setOrderState(OrderState.COOKING);
             System.out.println(order.getOrderState());
-            sleep(2);
+            sleep(5000);
             return cookProduct(order);
         } catch (InterruptedException e) {
             throw new RuntimeException();

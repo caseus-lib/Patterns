@@ -12,6 +12,12 @@ public class BakeryShopBehaviorExecutor implements BakeryShopBehavior {
     private int ordersNumber = 0;
 
     @Override
+    public void askForProductAmount(ProductType productType, int amount) {
+        this.productType = productType;
+        this.amount = amount;
+    }
+
+    @Override
     public void assignNewOrdinalCreature(OrdinalCreature ordinalCreature) {
         this.ordinalCreature = ordinalCreature;
     }
@@ -29,5 +35,10 @@ public class BakeryShopBehaviorExecutor implements BakeryShopBehavior {
     @Override
     public String retrieveCreatureInformation() {
         return ordinalCreature.toString();
+    }
+
+    @Override
+    public String retrieveOrderInformation() {
+        return productType.getName() + ": " + amount;
     }
 }

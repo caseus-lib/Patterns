@@ -1,6 +1,7 @@
 package process.bakery;
 
 import app.executor.StepsWorker;
+import iterator.ForwardIterator;
 
 import java.util.ArrayList;
 
@@ -10,6 +11,9 @@ public class BakeryShopStepsWorker extends StepsWorker {
 
     public BakeryShopStepsWorker(BakeryShopSteps steps) {
         this.steps = steps;
+        initSteps();
+        iterator = new ForwardIterator<>(stepsArray);
+        iterator.first();
     }
 
     @Override

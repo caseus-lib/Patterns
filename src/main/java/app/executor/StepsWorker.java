@@ -9,7 +9,7 @@ import java.util.List;
 public class StepsWorker {
 
     protected List<Runnable> stepsArray;
-    private Iterator<Runnable> iterator;
+    protected Iterator<Runnable> iterator;
     private Steps steps;
 
     public StepsWorker() {
