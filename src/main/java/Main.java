@@ -1,4 +1,4 @@
-import app.*;
+import app.ApplicationCreator;
 
 public class Main {
 

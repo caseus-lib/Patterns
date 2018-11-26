@@ -136,7 +136,7 @@ public class BakeryForm extends Controller implements BakeryShopSteps {
         cakeButton = (ProductImageButton) productImageFactory.getProductImage(product,
                                                                               new Context(ContextType.GOODS,
                                                                                           new Size(50, 50)));
-        cakeButton.setLayoutX(452);
+        cakeButton.setLayoutX(402);
         cakeButton.setLayoutY(330);
         mainPane.getChildren().add(cakeButton);
     }
