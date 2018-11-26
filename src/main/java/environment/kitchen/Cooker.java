@@ -28,7 +28,6 @@ public class Cooker {
     }
 
     private static void cookProduct(Product product, int flour, int egg, int sugar) {
-        System.out.println("product = [" + product + "], flour = [" + flour + "], egg = [" + egg + "], sugar = [" + sugar + "]");
         for (int i = 0; i < flour; i++) {
             product.addComponent(fridge.getByName(BaseProduct.FlOUR.getName())
                     .orElseThrow(() -> new NoProductFound(BaseProduct.FlOUR.getName())));

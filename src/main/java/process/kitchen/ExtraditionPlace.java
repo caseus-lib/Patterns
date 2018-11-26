@@ -18,18 +18,36 @@ public class ExtraditionPlace {
         return ourInstance;
     }
 
+    private ExtraditionMemento extraditionMemento;
+
     private ExtraditionPlace() {
         readyOrderList = new HashMap<>();
     }
 
     public synchronized void add(Order order, List<Product> products) {
-        System.out.println("order = [" + order + "], products = [" + products + "]");
-        readyOrderList.put(order, products);
+        recover();
+        if (order.getOrderNumber() > 0) {
+            readyOrderList.put(order, products);
+        }
+        backup();
     }
 
     public void remove(Order order) {
+        recover();
         order.setOrderState(OrderState.RELEASED);
         readyOrderList.remove(order);
+        backup();
+    }
+
+    private void recover() {
+        if (extraditionMemento != null) {
+            readyOrderList = extraditionMemento.getExtraditionState().getReadyOrderList();
+        }
+    }
+
+    private void backup() {
+        GoodWitch goodWitch = GoodWitch.getInstance();
+        extraditionMemento = goodWitch.createMemento(new ExtraditionState(readyOrderList));
     }
 
     public Map<Order, List<Product>> getReadyOrderList() {

@@ -57,6 +57,26 @@
             <TextArea fx:id="sellerTextArea" editable="false" layoutX="28.0" layoutY="48.0" prefHeight="117.0" prefWidth="175.0" wrapText="true" />
          <Button fx:id="nextStepButton" layoutX="14.0" layoutY="522.0" mnemonicParsing="false" onMouseClicked="#nextStep" text="-&gt;" />
          <Button layoutX="3.0" layoutY="2.0" mnemonicParsing="false" onMouseClicked="#update" />
+         <ImageView fx:id="badWitchImage" fitHeight="150.0" fitWidth="200.0" layoutX="249.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../img/bakery/witch.png" />
+            </image>
+         </ImageView>
+         <ImageView fx:id="fairyImage" fitHeight="150.0" fitWidth="200.0" layoutX="249.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../img/bakery/fairy.png" />
+            </image>
+         </ImageView>
+         <ImageView fx:id="sunImage" fitHeight="79.0" fitWidth="67.0" layoutX="771.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../img/bakery/sun.png" />
+            </image>
+         </ImageView>
+         <ImageView fx:id="moonImage" fitHeight="79.0" fitWidth="101.0" layoutX="752.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../img/bakery/moon.png" />
+            </image>
+         </ImageView>
         </AnchorPane>
       <AnchorPane prefHeight="200.0" prefWidth="200.0">
          <children>

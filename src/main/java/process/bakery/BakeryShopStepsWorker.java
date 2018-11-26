@@ -19,6 +19,7 @@ public class BakeryShopStepsWorker extends StepsWorker {
     @Override
     protected void initSteps() {
         stepsArray = new ArrayList<>();
+        stepsArray.add(() -> steps.setDay());
         stepsArray.add(() -> steps.girlHasCame());
         stepsArray.add(() -> steps.personRequestsForCandy());
         stepsArray.add(() -> steps.sellerAcceptOrder());
@@ -28,6 +29,9 @@ public class BakeryShopStepsWorker extends StepsWorker {
         stepsArray.add(() -> steps.unicornHasCame());
         stepsArray.add(() -> steps.personRequestsForCake());
         stepsArray.add(() -> steps.sellerAcceptOrder());
+        stepsArray.add(() -> steps.witchHasCome());
+        stepsArray.add(() -> steps.fairyHasCome());
+        stepsArray.add(() -> steps.setNight());
         stepsArray.add(() -> steps.girlHasCame());
         stepsArray.add(() -> steps.personRequestsForBiscuit());
         stepsArray.add(() -> steps.sellerAcceptOrder());

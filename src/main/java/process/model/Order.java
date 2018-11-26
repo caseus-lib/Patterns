@@ -14,6 +14,10 @@ public class Order extends Subject {
     public Order() {
     }
 
+    public Order(int orderNumber) {
+        this.orderNumber = orderNumber;
+    }
+
     public Order(ProductType productType, int amount, int orderNumber) {
         this.productType = productType;
         this.amount = amount;

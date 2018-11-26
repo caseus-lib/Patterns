@@ -5,6 +5,7 @@ import app.graphic.ui.view.ProductImageButton;
 import app.graphic.ui.view.ProductImageFactory;
 import enums.ContextType;
 import enums.ProductType;
+import enums.TimesOfDay;
 import environment.creatures.Person;
 import environment.creatures.Unicorn;
 import environment.products.Product;
@@ -51,6 +52,10 @@ public class BakeryForm extends Controller implements BakeryShopSteps {
     public ListView<Integer> cookingListView;
     public ListView<Integer> readyListView;
     public FlowPane extraditionPane;
+    public ImageView badWitchImage;
+    public ImageView fairyImage;
+    public ImageView sunImage;
+    public ImageView moonImage;
 
     private List<ImageView> images;
 
@@ -73,10 +78,26 @@ public class BakeryForm extends Controller implements BakeryShopSteps {
         images.add(magicImage);
         images.add(emptyImage);
         images.add(customerDialogImage);
+        images.add(badWitchImage);
+        images.add(fairyImage);
         stepsWorker = new BakeryShopStepsWorker(this);
         cakeButton.setVisible(false);
         hideAll();
         emptyImage.setVisible(true);
+    }
+
+    @Override
+    public void setDay() {
+        sunImage.setVisible(true);
+        moonImage.setVisible(false);
+        executor.setTimesOfDay(TimesOfDay.DAY);
+    }
+
+    @Override
+    public void setNight() {
+        sunImage.setVisible(false);
+        moonImage.setVisible(true);
+        executor.setTimesOfDay(TimesOfDay.NIGHT);
     }
 
     @Override
@@ -101,6 +122,19 @@ public class BakeryForm extends Controller implements BakeryShopSteps {
         setCustomerVisible(unicornImage);
         customerTextArea.setText("Gjkzdadioadk!");
         executor.assignNewOrdinalCreature(new MagicalAdapter(new Unicorn()));
+    }
+
+    @Override
+    public void witchHasCome() {
+        badWitchImage.setVisible(true);
+        executor.destroyAll();
+    }
+
+    @Override
+    public void fairyHasCome() {
+        badWitchImage.setVisible(false);
+        fairyImage.setVisible(true);
+        executor.recoverAll();
     }
 
     @Override

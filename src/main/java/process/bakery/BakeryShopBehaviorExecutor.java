@@ -1,8 +1,15 @@
 package process.bakery;
 
 import enums.ProductType;
+import enums.TimesOfDay;
 import environment.creatures.OrdinalCreature;
 import process.command.OrderCommand;
+import process.hall.BadWitch;
+import process.kitchen.ExtraditionPlace;
+import process.kitchen.Kitchen;
+import process.model.Order;
+
+import java.util.Collections;
 
 public class BakeryShopBehaviorExecutor implements BakeryShopBehavior {
 
@@ -10,6 +17,7 @@ public class BakeryShopBehaviorExecutor implements BakeryShopBehavior {
     private int amount;
     private OrdinalCreature ordinalCreature;
     private int ordersNumber = 0;
+    private BadWitch badWitch = new BadWitch();
 
     @Override
     public void askForProductAmount(ProductType productType, int amount) {
@@ -40,5 +48,21 @@ public class BakeryShopBehaviorExecutor implements BakeryShopBehavior {
     @Override
     public String retrieveOrderInformation() {
         return productType.getName() + ": " + amount;
+    }
+
+    @Override
+    public void destroyAll() {
+        badWitch.destroyAll();
+    }
+
+    @Override
+    public void recoverAll() {
+        ExtraditionPlace instance = ExtraditionPlace.getInstance();
+        instance.add(new Order(-1), Collections.emptyList());
+    }
+
+    @Override
+    public void setTimesOfDay(TimesOfDay timesOfDay) {
+        Kitchen.getInstance().setState(timesOfDay);
     }
 }
