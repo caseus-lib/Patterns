@@ -1,7 +1,9 @@
 package process.kitchen;
 
 import enums.OrderState;
+import environment.products.MagicalProduct;
 import environment.products.Product;
+import environment.products.ProductObjectPool;
 import process.model.Order;
 
 import java.util.HashMap;
@@ -19,6 +21,7 @@ public class ExtraditionPlace {
     }
 
     private ExtraditionMemento extraditionMemento;
+    private ProductObjectPool  productObjectPool = ProductObjectPool.getInstance();
 
     private ExtraditionPlace() {
         readyOrderList = new HashMap<>();
@@ -35,7 +38,7 @@ public class ExtraditionPlace {
     public void remove(Order order) {
         recover();
         order.setOrderState(OrderState.RELEASED);
-        readyOrderList.remove(order);
+        readyOrderList.remove(order).forEach(product -> productObjectPool.release(((MagicalProduct) product)));
         backup();
     }
 

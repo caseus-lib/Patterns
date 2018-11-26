@@ -3,26 +3,31 @@ package environment.kitchen;
 import enums.BaseProduct;
 import environment.products.MagicalProduct;
 import environment.products.Product;
+import environment.products.ProductObjectPool;
 import exception.NoProductFound;
 
 public class Cooker {
 
     private static Fridge fridge = Fridge.getInstance();
+    private static ProductObjectPool productObjectPool = ProductObjectPool.getInstance();
 
     public static Product cookCake() {
-        MagicalProduct cake = new MagicalProduct("Кекс");
+        MagicalProduct cake = productObjectPool.asquire();
+        cake.setName("Кекс");
         cookProduct(cake, 4, 2, 3);
         return cake;
     }
 
     public static Product cookCandy() {
-        MagicalProduct cookie = new MagicalProduct("Конфетка");
+        MagicalProduct cookie = productObjectPool.asquire();
+        cookie.setName("Конфетка");
         cookProduct(cookie, 0, 0, 20);
         return cookie;
     }
 
     public static Product cookBiscuit() {
-        MagicalProduct biscuit = new MagicalProduct("Печенье");
+        MagicalProduct biscuit = productObjectPool.asquire();
+        biscuit.setName("Печенье");
         cookProduct(biscuit, 2, 4, 2);
         return biscuit;
     }

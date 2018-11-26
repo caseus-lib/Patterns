@@ -16,6 +16,11 @@ public class SpiceDecorator implements Product {
     }
 
     @Override
+    public void reset() {
+        product = null;
+    }
+
+    @Override
     public String toString() {
         return product.toString();
     }

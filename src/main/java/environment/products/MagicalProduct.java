@@ -25,6 +25,13 @@ public class MagicalProduct implements Product {
     }
 
     @Override
+    public void reset() {
+        components = new ArrayList<>();
+        magicalPowerList = new MagicalPowerList();
+        name = "";
+    }
+
+    @Override
     public void addPower(MagicalPower magicalPower) {
         magicalPowerList.add(magicalPower);
     }

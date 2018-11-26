@@ -29,10 +29,10 @@ public class KitchenDay implements KitchenState {
     public List<Product> startCook(Order order) {
         try {
             System.out.println(order.getOrderState());
-            sleep(5000);
+            sleep(3000);
             order.setOrderState(OrderState.COOKING);
             System.out.println(order.getOrderState());
-            sleep(5000);
+            sleep(3000);
             List<Product> products = cookProduct(order);
             extraditionPlace.add(order, products);
             return products;

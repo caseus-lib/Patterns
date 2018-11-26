@@ -15,14 +15,14 @@ public abstract class ProductViewFactory {
     }
 
     public ProductView getProductImage(Product product, Context context) {
-        if (productImageMap.containsKey(product.toString())) {
-            ProductView productImage = productImageMap.get(product.toString());
+        if (productImageMap.containsKey(product.toString() + product.getName())) {
+            ProductView productImage = productImageMap.get(product.toString() + product.getName());
             productImage.setState(context);
             return productImage;
         } else {
             ProductView productImage = productViewPrototype.clone(product);
             productImage.setState(context);
-            productImageMap.put(product.toString(), productImage);
+            productImageMap.put(product.toString() + product.getName(), productImage);
             return productImage;
         }
     }

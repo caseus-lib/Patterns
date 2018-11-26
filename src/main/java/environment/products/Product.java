@@ -16,5 +16,6 @@ public interface Product {
     void addPower(MagicalPower magicalPower);
     boolean hasPower(MagicalPower magicalPower);
     String getInfoAboutComponents();
+    void reset();
 
 }
