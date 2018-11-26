@@ -1,7 +1,7 @@
 package app;
 
 import environment.Counter;
-import environment.kitchen.Fridge;
+import environment.kitchen.IndirectStorage;
 import environment.kitchen.ShowCase;
 import environment.magical.powers.Happiness;
 import environment.magical.powers.Responsibility;
@@ -10,26 +10,26 @@ import environment.products.SimpleMagicalProduct;
 
 public class Initialization {
 
-    private static Fridge fridge = Fridge.getInstance();
+    private static IndirectStorage storage = new IndirectStorage();
     private static ShowCase showCase = ShowCase.getInstance();
     private static Counter counter = Counter.getInstance();
 
     private static void addSimpleProducts() {
-        fridge.addSeveral(
+        storage.addSeveral(
                 new SimpleMagicalProduct(
                         "Мука", new Happiness(2)
                 ),
                 100
         );
         counter.addProduct("Мука", 2);
-        fridge.addSeveral(
+        storage.addSeveral(
                 new SimpleMagicalProduct(
                         "Яйцо", new Responsibility(5)
                 ),
                 100
         );
         counter.addProduct("Яйцо", 5);
-        fridge.addSeveral(
+        storage.addSeveral(
                 new SimpleMagicalProduct(
                         "Сахар",
                         new Strength(3), new Happiness(10)

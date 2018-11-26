@@ -8,8 +8,8 @@ import exception.NoProductFound;
 
 public class Cooker {
 
-    private static Fridge fridge = Fridge.getInstance();
     private static ProductObjectPool productObjectPool = ProductObjectPool.getInstance();
+    private static IndirectStorage storage = new IndirectStorage();
 
     public static Product cookCake() {
         MagicalProduct cake = productObjectPool.asquire();
@@ -34,15 +34,15 @@ public class Cooker {
 
     private static void cookProduct(Product product, int flour, int egg, int sugar) {
         for (int i = 0; i < flour; i++) {
-            product.addComponent(fridge.getByName(BaseProduct.FlOUR.getName())
+            product.addComponent(storage.getByName(BaseProduct.FlOUR.getName())
                     .orElseThrow(() -> new NoProductFound(BaseProduct.FlOUR.getName())));
         }
         for (int i = 0; i < egg; i++) {
-            product.addComponent(fridge.getByName(BaseProduct.EGG.getName())
+            product.addComponent(storage.getByName(BaseProduct.EGG.getName())
                     .orElseThrow(() -> new NoProductFound(BaseProduct.EGG.getName())));
         }
         for (int i = 0; i < sugar; i++) {
-            product.addComponent(fridge.getByName(BaseProduct.SUGAR.getName())
+            product.addComponent(storage.getByName(BaseProduct.SUGAR.getName())
                     .orElseThrow(() -> new NoProductFound(BaseProduct.SUGAR.getName())));
         }
     }
