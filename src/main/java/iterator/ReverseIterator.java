@@ -30,4 +30,9 @@ public class ReverseIterator<T> implements Iterator<T> {
     public T currentItem() {
         return list.get(index);
     }
+
+    @Override
+    public void previos() {
+        index--;
+    }
 }

@@ -3,6 +3,11 @@ package process.bakery;
 import enums.ProductType;
 import enums.TimesOfDay;
 import environment.creatures.OrdinalCreature;
+import environment.kitchen.BoxMaker;
+import environment.products.Product;
+import environment.products.SweetBox;
+import environment.sale.Bakery;
+import environment.sale.SellerProxy;
 import process.command.OrderCommand;
 import process.hall.BadWitch;
 import process.hall.JournalVisitor;
@@ -15,11 +20,25 @@ import java.util.Collections;
 public class BakeryShopBehaviorExecutor implements BakeryShopBehavior {
 
     private ProductType productType;
+    private Bakery seller = new SellerProxy();
+    private Product product;
     private int amount;
     private OrdinalCreature ordinalCreature;
     private int ordersNumber = 0;
     private BadWitch badWitch = new BadWitch();
     private JournalVisitor visitor = new JournalVisitor();
+
+    @Override
+    public SweetBox askForBox() {
+        SweetBox randomBox = BoxMaker.createRandomBox();
+        product = randomBox;
+        return randomBox;
+    }
+
+    @Override
+    public void saleBox() {
+        seller.saleProduct(product);
+    }
 
     @Override
     public String getJournalText() {

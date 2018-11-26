@@ -35,5 +35,8 @@ public class BakeryShopStepsWorker extends StepsWorker {
         stepsArray.add(() -> steps.girlHasCame());
         stepsArray.add(() -> steps.personRequestsForBiscuit());
         stepsArray.add(() -> steps.sellerAcceptOrder());
+        stepsArray.add(() -> steps.boyHasCame());
+        stepsArray.add(() -> steps.aksForBox());
+        stepsArray.add(() -> steps.saleBox());
     }
 }

@@ -3,18 +3,18 @@ package app.graphic.ui.controllers;
 import app.graphic.ui.services.Size;
 import app.graphic.ui.view.ProductImageButton;
 import app.graphic.ui.view.ProductImageFactory;
+import enums.Color;
 import enums.ContextType;
 import enums.ProductType;
 import enums.TimesOfDay;
 import environment.creatures.Person;
 import environment.creatures.Unicorn;
 import environment.products.Product;
+import environment.products.SweetBox;
 import environment.sale.MagicalAdapter;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
@@ -57,6 +57,11 @@ public class BakeryForm extends Controller implements BakeryShopSteps {
     public ImageView sunImage;
     public ImageView moonImage;
     public TextArea journalText;
+    public AnchorPane boxPane;
+    public RadioButton redColor;
+    public RadioButton greenColor;
+    public RadioButton blueColor;
+    public CheckBox withBow;
 
     private List<ImageView> images;
 
@@ -85,6 +90,55 @@ public class BakeryForm extends Controller implements BakeryShopSteps {
         cakeButton.setVisible(false);
         hideAll();
         emptyImage.setVisible(true);
+    }
+
+    @Override
+    public void aksForBox() {
+        customerTextArea.setText("Соберите мне, пожалуйста, волшебную коробку со сладостями");
+        showBoxParameters(true);
+    }
+
+    @Override
+    public void saleBox() {
+        cakeButton.setVisible(true);
+        showBoxParameters(true);
+        SweetBox product = executor.askForBox();
+        buildBox(product);
+        updateButton(product);
+        sellerTextArea.setText(
+                "Держите волшебный набор" + "\n" +
+                "Состав коробки:\n" + product.getInfoAboutComponents()
+                              );
+        cakeButton.setVisible(true);
+    }
+
+    private void buildBox(SweetBox box) {
+        if (redColor.isSelected())
+            box.buildColorBox(Color.RED);
+        else {
+            if (greenColor.isSelected())
+                box.buildColorBox(Color.GREEN);
+            else {
+                if (blueColor.isSelected())
+                    box.buildColorBox(Color.BLUE);
+                else
+                    box.buildColorBox(Color.WHITE);
+            }
+        }
+        if (withBow.isSelected()) {
+            box.buildBoxWithBow();
+        }
+        box.setName(box.getColor() + (box.getWithBow() ? "-bow" : ""));
+    }
+
+    private void updateButton(Product product) {
+        mainPane.getChildren().remove(cakeButton);
+        cakeButton = (ProductImageButton) productImageFactory.getProductImage(product,
+                                                                              new Context(ContextType.GOODS,
+                                                                                          new Size(50, 50)));
+        cakeButton.setLayoutX(452);
+        cakeButton.setLayoutY(330);
+        mainPane.getChildren().add(cakeButton);
     }
 
     @Override
@@ -203,9 +257,18 @@ public class BakeryForm extends Controller implements BakeryShopSteps {
 
     private void hideAll() {
         sellerTextArea.setText("");
+        cakeButton.setVisible(false);
         images.forEach(imageView -> imageView.setVisible(false));
         customerTextArea.setVisible(false);
-        cakeButton.setVisible(false);
+        showBoxParameters(false);
+    }
+
+    private void showBoxParameters (boolean value){
+        boxPane.setVisible(value);
+        greenColor.setVisible(value);
+        redColor.setVisible(value);
+        blueColor.setVisible(value);
+        withBow.setVisible(value);
     }
 
     public void nextStep() {

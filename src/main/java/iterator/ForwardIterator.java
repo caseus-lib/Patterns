@@ -31,4 +31,8 @@ public class ForwardIterator<T> implements Iterator<T> {
         return list.get(index);
     }
 
+    @Override
+    public void previos() {
+        index--;
+    }
 }

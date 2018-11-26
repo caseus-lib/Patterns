@@ -13,5 +13,7 @@ public interface BakeryShopSteps {
     void sellerAcceptOrder();
     void setDay();
     void setNight();
+    void aksForBox();
+    void saleBox();
 
 }

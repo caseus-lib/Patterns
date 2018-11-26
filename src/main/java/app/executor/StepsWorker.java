@@ -45,6 +45,11 @@ public class StepsWorker {
     }
 
     public void nextStep() {
+        if (iterator.isDone()) {
+            iterator.previos();
+            iterator.previos();
+            iterator.previos();
+        }
         if (!iterator.isDone()) {
             iterator.currentItem().run();
             iterator.next();

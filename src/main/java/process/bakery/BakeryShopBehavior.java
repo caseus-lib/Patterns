@@ -3,6 +3,7 @@ package process.bakery;
 import enums.ProductType;
 import enums.TimesOfDay;
 import environment.creatures.OrdinalCreature;
+import environment.products.SweetBox;
 
 public interface BakeryShopBehavior {
 
@@ -17,5 +18,7 @@ public interface BakeryShopBehavior {
     void setTimesOfDay(TimesOfDay timesOfDay);
     void visitCreature();
     String getJournalText();
+    SweetBox askForBox();
+    void saleBox();
 
 }

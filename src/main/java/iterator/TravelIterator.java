@@ -40,4 +40,9 @@ public class TravelIterator<T> implements Iterator<T> {
     public T currentItem() {
         return list.get(index);
     }
+
+    @Override
+    public void previos() {
+        index--;
+    }
 }
