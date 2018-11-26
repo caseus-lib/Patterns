@@ -5,6 +5,7 @@ import enums.TimesOfDay;
 import environment.creatures.OrdinalCreature;
 import process.command.OrderCommand;
 import process.hall.BadWitch;
+import process.hall.JournalVisitor;
 import process.kitchen.ExtraditionPlace;
 import process.kitchen.Kitchen;
 import process.model.Order;
@@ -18,6 +19,16 @@ public class BakeryShopBehaviorExecutor implements BakeryShopBehavior {
     private OrdinalCreature ordinalCreature;
     private int ordersNumber = 0;
     private BadWitch badWitch = new BadWitch();
+    private JournalVisitor visitor = new JournalVisitor();
+
+    @Override
+    public String getJournalText() {
+        return String.join("\n", visitor.getJournal());
+    }
+
+    public void visitCreature() {
+        ordinalCreature.acceptVisitor(visitor);
+    }
 
     @Override
     public void askForProductAmount(ProductType productType, int amount) {

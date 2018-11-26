@@ -19,5 +19,4 @@ public class Unicorn implements MagicalCreature {
     public void consume(Rainbow rainbow) {
         magicalPowerList.merge(rainbow.getMagicalPowerList());
     }
-
 }

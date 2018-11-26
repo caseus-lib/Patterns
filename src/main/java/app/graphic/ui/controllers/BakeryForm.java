@@ -56,6 +56,7 @@ public class BakeryForm extends Controller implements BakeryShopSteps {
     public ImageView fairyImage;
     public ImageView sunImage;
     public ImageView moonImage;
+    public TextArea journalText;
 
     private List<ImageView> images;
 
@@ -106,6 +107,8 @@ public class BakeryForm extends Controller implements BakeryShopSteps {
         setCustomerVisible(girlImage);
         customerTextArea.setText("Добрый день!");
         executor.assignNewOrdinalCreature(new Person("Мария"));
+        executor.visitCreature();
+        updateJournal();
     }
 
     @Override
@@ -114,6 +117,8 @@ public class BakeryForm extends Controller implements BakeryShopSteps {
         setCustomerVisible(boyImage);
         customerTextArea.setText("Здравствуйте!");
         executor.assignNewOrdinalCreature(new Person("Павел"));
+        executor.visitCreature();
+        updateJournal();
     }
 
     @Override
@@ -122,6 +127,8 @@ public class BakeryForm extends Controller implements BakeryShopSteps {
         setCustomerVisible(unicornImage);
         customerTextArea.setText("Gjkzdadioadk!");
         executor.assignNewOrdinalCreature(new MagicalAdapter(new Unicorn()));
+        executor.visitCreature();
+        updateJournal();
     }
 
     @Override
@@ -174,6 +181,10 @@ public class BakeryForm extends Controller implements BakeryShopSteps {
             extraditionPane.getChildren().add(buildOrderButton(order));
             products.forEach(product -> extraditionPane.getChildren().add(buildProductButton(product)));
         });
+    }
+
+    private void updateJournal() {
+        journalText.setText(executor.getJournalText());
     }
 
     private Button buildOrderButton(Order order) {

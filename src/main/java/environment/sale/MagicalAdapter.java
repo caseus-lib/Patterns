@@ -6,6 +6,7 @@ import environment.magical.powers.Happiness;
 import environment.magical.powers.MagicalPower;
 import environment.products.Product;
 import environment.products.Rainbow;
+import process.hall.Visitor;
 
 public class MagicalAdapter implements OrdinalCreature {
 
@@ -29,5 +30,10 @@ public class MagicalAdapter implements OrdinalCreature {
     @Override
     public MagicalPower getMinPower() {
         return new Happiness(0);
+    }
+
+    @Override
+    public void acceptVisitor(Visitor visitor) {
+        visitor.visit(this);
     }
 }

@@ -15,5 +15,7 @@ public interface BakeryShopBehavior {
     void destroyAll();
     void recoverAll();
     void setTimesOfDay(TimesOfDay timesOfDay);
+    void visitCreature();
+    String getJournalText();
 
 }

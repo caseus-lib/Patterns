@@ -1,9 +1,10 @@
 package environment.creatures;
 
 import environment.magical.powers.*;
+import environment.products.Product;
 import exception.NoPowerFound;
 import iterator.Iterator;
-import environment.products.Product;
+import process.hall.Visitor;
 
 public class Person implements OrdinalCreature {
 
@@ -45,6 +46,11 @@ public class Person implements OrdinalCreature {
         return powers.getStream()
                 .min(MagicalPower::compareTo)
                 .orElseThrow(NoPowerFound::new);
+    }
+
+    @Override
+    public void acceptVisitor(Visitor visitor) {
+        visitor.visit(this);
     }
 
     public String getName() {
